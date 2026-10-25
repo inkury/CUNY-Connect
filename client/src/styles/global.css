@@ -1,0 +1,37 @@
+/*
+  Global styles for the CUNY-Connect client.
+  This file sets the base styles every page shares: the reset, the body, the navbar, and the page container.
+  Owner: Person 3
+  TODO: Add base styles for headings, links, buttons, and form inputs, plus shared loading and empty-state styles.
+*/
+
+/* Border-box sizing makes widths include padding, which keeps layouts predictable. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* The body pulls its font and colors from the design tokens so the whole app follows the style guide. */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* The navbar wraps onto a second line on narrow screens instead of overflowing sideways. */
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* The container centers page content and stops lines from getting too long on wide screens. */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-4);
+}
