@@ -1,0 +1,28 @@
+/*
+  Design tokens for the CUNY-Connect client.
+  This file holds the colors, fonts, and spacing the whole client uses, and it is where the team's style guide lives.
+  Use these variables instead of hard-coded values so the look can change in one place.
+  Owner: Person 3
+  TODO: Pick the final color palette and fonts, and write down when to use each color and spacing size.
+*/
+:root {
+  /* Colors are named by purpose rather than hue, so changing the palette does not mean renaming them everywhere. */
+  --color-primary: #1d3c8f;
+  --color-text: #1a1a1a;
+  --color-muted: #666666;
+  --color-bg: #ffffff;
+  --color-border: #dddddd;
+
+  /* The system font stack loads instantly and looks native on every device. */
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Spacing follows a quarter-rem scale so gaps line up across pages. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+
+  /* A shared radius and max width keep cards and page content consistent. */
+  --radius: 6px;
+  --max-width: 1100px;
+}
