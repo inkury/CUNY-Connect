@@ -21,7 +21,7 @@ Every file starts with a comment that says what it is for, who owns it, and what
 
 - Person 1, auth and setup (name TBD): register, login, and me routes, PATCH /api/users/me, auth and error middleware, AuthContext, Login, Signup, Profile, and 404 pages, validation, deployment, README
 - Person 2, events and clubs API (name TBD): Club and Event models, event, club, and admin routes, feed filters, ClubProfile and AdminClubs pages
-- Person 3, feed UI (name TBD): layout, Navbar, styles, EventCard, Feed and EventDetail pages, loading and empty states
+- Person 3, feed UI (Saba Chechelashvili): layout, Navbar, styles, EventCard, Feed and EventDetail pages, loading and empty states
 - Person 4, dashboards and officer tools (name TBD): save and follow routes, dashboard route, Dashboard, OfficerDashboard, and ClubEditor pages, seed script
 
 ## Setup
