@@ -19,10 +19,10 @@ Roles are not assigned yet. Add each name to the ownership list below once they 
 
 Every file starts with a comment that says what it is for, who owns it, and what is left to build. Work on your own files. Talk to the owner before changing someone else's.
 
-- Person 1, auth and setup (name TBD): register, login, and me routes, PATCH /api/users/me, auth and error middleware, AuthContext, Login, Signup, Profile, and 404 pages, validation, deployment, README
-- Person 2, events and clubs API (name TBD): Club and Event models, event, club, and admin routes, feed filters, ClubProfile and AdminClubs pages
-- Person 3, feed UI (name TBD): layout, Navbar, styles, EventCard, Feed and EventDetail pages, loading and empty states
-- Person 4, dashboards and officer tools (name TBD): save and follow routes, dashboard route, Dashboard, OfficerDashboard, and ClubEditor pages, seed script
+- Person 1: auth and setup (Francisco Rodriguez): register, login, and me routes, PATCH /api/users/me, auth and error middleware, AuthContext, Login, Signup, Profile, and 404 pages, validation, deployment
+- Person 2: events and clubs API (Kenneth Gonzalez): Club and Event models, event, club, and admin routes, feed filters, ClubProfile and AdminClubs pages
+- Person 3: feed UI (Saba Chechelashvili): layout, Navbar, styles, EventCard, Feed and EventDetail pages, loading and empty states
+- Person 4: dashboards and officer tools (Abinash Baruwal): save and follow routes, dashboard route, Dashboard, OfficerDashboard, and ClubEditor pages, seed script, README
 
 ## Setup
 
