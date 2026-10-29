@@ -6,9 +6,10 @@
 */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   // The port is fixed because CLIENT_URL in server/.env has to match it for CORS to allow requests.
   server: {
     port: 5173,
