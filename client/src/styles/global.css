@@ -1,10 +1,46 @@
 @import 'tailwindcss';
 /*
   Global styles for the CUNY-Connect client.
-  This file sets the base styles every page shares: the reset, the body, the navbar, and the page container.
+  This file turns on Tailwind, defines the theme (colors and fonts), and sets the base styles every page shares:
+  the reset, the body, headings, links, the navbar, and the page container.
   Owner: Person 3
-  TODO: Add base styles for headings, links, buttons, and form inputs, plus shared loading and empty-state styles.
+  Theme classes: bg-primary, text-primary, bg-primary-dark, bg-accent, text-accent, font-heading, font-body.
+  Both fonts use the system font stack, so nothing has to be downloaded and text shows up instantly.
+  TODO: Add base styles for buttons and form inputs.
+  TODO: Add shared loading and empty-state styles.
+  TODO: Move the old values in variables.css (like --color-primary #1d3c8f) to match this theme, or remove them.
 */
+
+/* "inline" puts the real values straight into the classes, so the older variables in variables.css cannot override them. */
+@theme inline {
+  --color-primary: #1e3a8a;
+  --color-primary-dark: #172e6e;
+  --color-accent: var(--color-amber-500);
+  --color-accent-dark: var(--color-amber-600);
+
+  --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Base styles go in Tailwind's base layer, so a class on an element (like text-accent) can still override them. */
+@layer base {
+  /* Light gray page with dark gray text keeps the page easy to read. */
+  body {
+    @apply bg-gray-50 font-body text-gray-800;
+  }
+
+  /* Headings are bold and navy so they stand out from the body text. */
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-bold text-primary;
+  }
+
+  /* Links have no underline and fade to the darker navy on hover. */
+  a {
+    @apply text-primary no-underline transition-colors duration-200 hover:text-primary-dark;
+  }
+}
 
 /* Border-box sizing makes widths include padding, which keeps layouts predictable. */
 *,
@@ -13,12 +49,9 @@
   box-sizing: border-box;
 }
 
-/* The body pulls its font and colors from the design tokens so the whole app follows the style guide. */
+/* The body only resets the margin here, because its colors and font now come from the base layer above. */
 body {
   margin: 0;
-  font-family: var(--font-body);
-  color: var(--color-text);
-  background: var(--color-bg);
 }
 
 /* The navbar wraps onto a second line on narrow screens instead of overflowing sideways. */
