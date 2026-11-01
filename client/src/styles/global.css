@@ -2,7 +2,7 @@
 /*
   Global styles for the CUNY-Connect client.
   This file turns on Tailwind, defines the theme (colors and fonts), and sets the base styles every page shares:
-  the reset, the body, headings, links, the navbar, and the page container.
+  the reset, the body, headings, and links.
   Owner: Person 3
   Theme classes: bg-primary, text-primary, bg-primary-dark, bg-accent, text-accent, font-heading, font-body.
   Both fonts use the system font stack, so nothing has to be downloaded and text shows up instantly.
@@ -65,20 +65,4 @@
 /* The body only resets the margin here, because its colors and font now come from the base layer above. */
 body {
   margin: 0;
-}
-
-/* The navbar wraps onto a second line on narrow screens instead of overflowing sideways. */
-.navbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-}
-
-/* The container centers page content and stops lines from getting too long on wide screens. */
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-4);
 }
