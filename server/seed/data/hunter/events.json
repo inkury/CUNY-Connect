@@ -1,0 +1,65 @@
+[
+  {
+    "title": "Midday Express Concert: Cello and Guitar Improvisation",
+    "description": "Cellist Rubin Kodheli and guitarist Miles Johnston perform a genre bending, largely improvised set.",
+    "dateTime": "2026-11-02T18:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Día de los Muertos Celebration",
+    "description": "Annual celebration with a community altar, mariachi music, traditional dances, and pan de muerto. All are welcome.",
+    "dateTime": "2026-11-02T22:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Cultural",
+    "hostClub": "Mexican Student Union"
+  },
+  {
+    "title": "Discussion: Bronx Attitude",
+    "description": "Rossanna Rosado talks about her memoir and her path from the Bronx to journalism and public service.",
+    "dateTime": "2026-11-02T23:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Academic Info Session: Accounting",
+    "description": "Learn about accounting program requirements, course order, career paths, and student resources.",
+    "dateTime": "2026-11-03T18:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Understanding Your Financial Aid & FAFSA Filing 101",
+    "description": "The Office of Financial Aid walks through financial aid basics and filing the 2027-2028 FAFSA.",
+    "dateTime": "2026-11-03T22:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Other",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Graduate Admissions Information Session",
+    "description": "Overview of applying to Hunter's graduate programs, including materials, deadlines, and tips, with time for questions.",
+    "dateTime": "2026-11-04T18:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Résumé Clinic",
+    "description": "A hands on hour to strengthen your résumé for job and internship applications.",
+    "dateTime": "2026-11-04T18:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Career",
+    "hostClub": "Hunter College"
+  }
+]
