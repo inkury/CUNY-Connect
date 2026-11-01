@@ -6,6 +6,7 @@
 */
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
+import Layout from './components/Layout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Feed from './pages/Feed.jsx';
 import EventDetail from './pages/EventDetail.jsx';
@@ -26,16 +27,18 @@ import NotFound from './pages/NotFound.jsx';
  */
 export default function App() {
   // Pages that need a login are wrapped in ProtectedRoute here, so each page does not have to check auth itself.
+  // Routes inside the Layout route share its page layout. Login and Signup sit outside it, so they will not get the navbar.
   return (
     <>
       <Navbar />
-      <main className="container">
-        <Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        <Route element={<Layout />}>
           <Route path="/" element={<Feed />} />
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/clubs/:id" element={<ClubProfile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
           <Route
             path="/profile"
             element={
@@ -77,8 +80,8 @@ export default function App() {
             }
           />
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </>
   );
 }
