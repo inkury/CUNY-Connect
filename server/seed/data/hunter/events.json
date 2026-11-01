@@ -61,5 +61,140 @@
     "campus": "Hunter",
     "category": "Career",
     "hostClub": "Hunter College"
+  },
+  {
+    "title": "Met Opera Outing: Samson et Dalila",
+    "description": "The Office of the Arts has a limited number of tickets to the Met Opera's dress rehearsal of Samson et Dalila.",
+    "dateTime": "2026-11-24T15:00:00.000Z",
+    "location": "Metropolitan Opera, Lincoln Center",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "From Renia to Us: Family, Memory and the Holocaust",
+    "description": "A talk on what families remember and pass down after the Holocaust, part of the Promoting Civil Discourse series.",
+    "dateTime": "2026-11-30T23:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Understanding Your Financial Aid & FAFSA Filing 101",
+    "description": "The Office of Financial Aid walks through financial aid basics and filing the 2027-2028 FAFSA.",
+    "dateTime": "2026-12-01T22:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Other",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Reconcilable Differences: Barbara Perry in Conversation with Alexis Coe",
+    "description": "Historian Barbara Perry discusses her new book in conversation with author Alexis Coe.",
+    "dateTime": "2026-12-01T23:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Distinguished Writers Series: Lynne Tillman",
+    "description": "Novelist and critic Lynne Tillman joins the Distinguished Writers Series.",
+    "dateTime": "2026-12-02T00:30:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Thinking Through Yiddish",
+    "description": "Smith College professor Justin Cammy gives a lunch lecture on Yiddish. Zoom link sent after RSVP.",
+    "dateTime": "2026-12-02T17:00:00.000Z",
+    "location": "Online (Zoom)",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Fine Dining Etiquette",
+    "description": "A hands-on session on handling multi-course business meals with confidence, part of the Student Leadership Colloquium.",
+    "dateTime": "2026-12-02T19:30:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Career",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Transfer Student Finals Study Hangout",
+    "description": "A cozy space for transfer students to study, recharge, and meet each other before finals.",
+    "dateTime": "2026-12-03T17:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Social",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "BS in Nursing Generic Program Information Session",
+    "description": "Learn about the four year Bachelor of Science in Nursing program and how to apply.",
+    "dateTime": "2026-12-03T22:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Red Demon (Performance 1)",
+    "description": "Hideki Noda's play Red Demon, directed by Alex Rogels.",
+    "dateTime": "2026-12-04T00:00:00.000Z",
+    "location": "Hunter North 537",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "A Decade of PROMESA: Puerto Rico's Future",
+    "description": "Closing symposium of the semester on accountability, governance, and the future of Puerto Rico.",
+    "dateTime": "2026-12-04T15:00:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Economics Seminar: Partha Deb",
+    "description": "Hunter economics professor Partha Deb presents at the department's seminar series.",
+    "dateTime": "2026-12-04T18:30:00.000Z",
+    "location": "Hunter West 1119",
+    "campus": "Hunter",
+    "category": "Academic",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Homecoming 2026",
+    "description": "Cheer on the Hunter Hawks, join the tailgate, and reconnect with alumni at the evening reception.",
+    "dateTime": "2026-12-04T23:30:00.000Z",
+    "location": "Hunter College",
+    "campus": "Hunter",
+    "category": "Sports",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Red Demon (Performance 3)",
+    "description": "Hideki Noda's play Red Demon, directed by Alex Rogels.",
+    "dateTime": "2026-12-05T00:00:00.000Z",
+    "location": "Hunter North 537",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
+  },
+  {
+    "title": "Red Demon (Performance 4)",
+    "description": "Hideki Noda's play Red Demon, directed by Alex Rogels.",
+    "dateTime": "2026-12-05T19:00:00.000Z",
+    "location": "Hunter North 537",
+    "campus": "Hunter",
+    "category": "Arts",
+    "hostClub": "Hunter College"
   }
 ]
