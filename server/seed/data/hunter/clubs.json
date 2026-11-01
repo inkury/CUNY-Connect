@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Computer Science Club",
+    "campus": "Hunter",
+    "description": "Weekly meetings, workshops, and projects for students interested in any area of computer science.",
+    "approved": true
+  },
+  {
+    "name": "Women in Computer Science",
+    "campus": "Hunter",
+    "description": "A community supporting women and underrepresented students in tech through skill building and career help.",
+    "approved": true
+  },
+  {
+    "name": "Accounting Society",
+    "campus": "Hunter",
+    "description": "Networking, speaker events, and career workshops for students pursuing accounting.",
+    "approved": true
+  },
+  {
+    "name": "Association of Business Students",
+    "campus": "Hunter",
+    "description": "Introduces students of any major to business careers and connects them with each other.",
+    "approved": true
+  },
+  {
+    "name": "Mexican Student Union",
+    "campus": "Hunter",
+    "description": "Celebrates Mexican culture at Hunter through social and educational events open to everyone.",
+    "approved": true
+  },
+  {
+    "name": "Caribbean Student Association",
+    "campus": "Hunter",
+    "description": "Brings Caribbean students together and shares Caribbean culture across campus.",
+    "approved": true
+  },
+  {
+    "name": "Bengali Student Association",
+    "campus": "Hunter",
+    "description": "Celebrates Bengali and South Asian culture through cultural, academic, and social events.",
+    "approved": true
+  },
+  {
+    "name": "Hawkappella",
+    "campus": "Hunter",
+    "description": "Hunter's a cappella group, rehearsing weekly and performing contemporary music with only voices.",
+    "approved": true
+  },
+  {
+    "name": "Theatre Company",
+    "campus": "Hunter",
+    "description": "Student led productions, workshops, and events for anyone interested in performing arts.",
+    "approved": true
+  },
+  {
+    "name": "Project Sunshine",
+    "campus": "Hunter",
+    "description": "Trains student volunteers to keep pediatric patients company during hospital visits.",
+    "approved": true
+  },
+  {
+    "name": "Pre-Medical Society",
+    "campus": "Hunter",
+    "description": "A network for pre-med students sharing academic advice, clinical opportunities, and research programs.",
+    "approved": true
+  },
+  {
+    "name": "The Envoy",
+    "campus": "Hunter",
+    "description": "Hunter's student run newspaper covering campus and CUNY news.",
+    "approved": true
+  },
+  {
+    "name": "WHCS College Radio",
+    "campus": "Hunter",
+    "description": "Student radio station showcasing student musicians, news talk, and creative shows.",
+    "approved": true
+  },
+  {
+    "name": "Hunter College",
+    "campus": "Hunter",
+    "description": "Events run by Hunter College offices and departments rather than a student club.",
+    "approved": true
+  },
+  {
+    "name": "The Third Mug at Hunter College",
+    "campus": "Hunter",
+    "description": "A cafe style club hosting monthly drink nights themed around different cultures.",
+    "approved": false
+  }
+]
