@@ -14,6 +14,7 @@
   --color-text: #172033;
   --color-muted: #697386;
   --color-bg: #ffffff;
+  --color-page: #f7f8fb;
   --color-border: #e6e9ef;
 
   /* DM Sans is for body text and Manrope is for headings. Both load from Google Fonts at the top of global.css. */
@@ -28,5 +29,8 @@
 
   /* A shared radius and max width keep cards and page content consistent. */
   --radius: 6px;
+  --radius-input: 10px;
+  --radius-button: 11px;
+  --radius-card: 16px;
   --max-width: 1100px;
 }
