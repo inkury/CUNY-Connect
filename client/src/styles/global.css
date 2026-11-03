@@ -1,39 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Manrope:wght@400;600;700;800&display=swap');
 @import 'tailwindcss';
 /*
   Global styles for the CUNY-Connect client.
-  This file turns on Tailwind, defines the theme (colors and fonts), and sets the base styles every page shares:
-  the reset, the body, headings, and links.
+  This file loads the fonts, turns on Tailwind, defines the theme (colors and fonts) from our Figma design system,
+  and sets the base styles every page shares: the reset, the body, headings, and links.
   Owner: Person 3
-  Theme classes: bg-primary, text-primary, bg-primary-dark, bg-accent, text-accent, font-heading, font-body.
-  Both fonts use the system font stack, so nothing has to be downloaded and text shows up instantly.
+  Theme classes: bg-primary, text-primary, bg-primary-dark, bg-primary-50, bg-accent, text-accent, bg-accent-dark,
+  text-ink, text-slate, text-slate-600, border-border, text-success, bg-success-50, font-heading, font-body.
+  The Google Fonts @import has to be the first line, because CSS ignores an @import that comes after other rules.
   TODO: Add base styles for buttons and form inputs.
   TODO: Add shared loading and empty-state styles.
-  TODO: Move the old values in variables.css (like --color-primary #1d3c8f) to match this theme, or remove them.
+  TODO: Keep the values here in sync with variables.css whenever either one changes.
 */
 
-/* "inline" puts the real values straight into the classes, so the older variables in variables.css cannot override them. */
+/* "inline" puts the real values straight into the classes, so the variables in variables.css cannot override them. */
 @theme inline {
+  /* Brand colors from Figma. */
   --color-primary: #1e3a8a;
   --color-primary-dark: #172e6e;
-  --color-accent: var(--color-amber-500);
-  --color-accent-dark: var(--color-amber-600);
+  --color-primary-50: #e8edfc;
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
 
-  --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Text and line colors. slate-600 replaces Tailwind's own slate-600 with our label color. */
+  --color-ink: #172033;
+  --color-slate: #697386;
+  --color-slate-600: #546074;
+  --color-border: #e6e9ef;
+
+  /* Status colors for success messages and badges. */
+  --color-success: #247748;
+  --color-success-50: #e9f8ef;
+
+  --font-heading: 'Manrope', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
 /* Base styles go in Tailwind's base layer, so a class on an element (like text-accent) can still override them. */
 @layer base {
-  /* Light gray page with dark gray text keeps the page easy to read. */
+  /* White page with slate DM Sans text, matching the Figma and --color-bg in variables.css. */
   body {
-    @apply bg-gray-50 font-body text-gray-800;
+    @apply bg-white font-body text-slate;
   }
 
-  /* Headings are bold and navy so they stand out from the body text. */
+  /* Headings are bold Manrope in near-black ink so they stand out from the slate body text. */
   h1,
   h2,
   h3 {
-    @apply font-heading font-bold text-primary;
+    @apply font-heading font-bold text-ink;
   }
 
   /* Tailwind resets heading sizes, so each level gets a phone size that grows from the md breakpoint (768px) up. */

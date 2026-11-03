@@ -27,7 +27,7 @@ function desktopLinkClass({ isActive }) {
   // Every link has a 2px bottom border, transparent when inactive, so the text does not jump when it becomes active.
   const base = 'flex h-16 items-center gap-2 border-b-2 px-1 text-sm font-medium transition-colors';
   if (isActive) {
-    return base + ' border-primary text-primary';
+    return base + ' border-accent text-primary';
   }
   return base + ' border-transparent text-gray-600 hover:border-gray-300 hover:text-primary';
 }
@@ -41,13 +41,13 @@ function desktopLinkClass({ isActive }) {
 function mobileLinkClass({ isActive }) {
   const base = 'flex items-center gap-3 border-l-4 px-4 py-3 font-medium transition-colors';
   if (isActive) {
-    return base + ' border-primary bg-gray-50 text-primary';
+    return base + ' border-accent bg-gray-50 text-primary';
   }
   return base + ' border-transparent text-gray-700 hover:bg-gray-50 hover:text-primary';
 }
 
 /**
- * Renders a round navy avatar with the user's initials, or a generic person icon when there are none.
+ * Renders a round light navy avatar with the user's initials, or a generic person icon when there are none.
  *
  * @param {object} props The component props.
  * @param {string} [props.initials] The letters to show, for example "JM". Leave it out to show the icon.
@@ -55,7 +55,7 @@ function mobileLinkClass({ isActive }) {
  */
 function Avatar({ initials }) {
   return (
-    <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-xs font-semibold text-white">
+    <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-50 text-xs font-semibold text-primary">
       {initials ? (
         initials
       ) : (
@@ -86,16 +86,14 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-50 border-b border-border bg-white">
       {/* The inner row lines up with the Layout's content: same max width and side padding. */}
       <div className="mx-auto flex h-16 max-w-275 items-center justify-between px-4 md:px-8">
         <Link to="/" className="flex items-center gap-2 text-primary" onClick={closeMenu}>
           <span className="grid h-8 w-8 place-items-center rounded-md bg-primary font-heading font-bold text-white">
             C
           </span>
-          <span className="font-heading text-lg">
-            CUNY <span className="font-bold">Connect</span>
-          </span>
+          <span className="font-heading text-lg font-bold">CUNY Connect</span>
         </Link>
 
         {/* Desktop links are hidden on phones and shown as a row from md (768px) up. */}
