@@ -25,11 +25,11 @@ const navLinks = [
  */
 function desktopLinkClass({ isActive }) {
   // Every link has a 2px bottom border, transparent when inactive, so the text does not jump when it becomes active.
-  const base = 'flex h-16 items-center gap-2 border-b-2 px-1 text-sm font-medium transition-colors';
+  const base = 'flex h-18 items-center gap-2 border-b-2 px-1 text-[15px] transition-colors';
   if (isActive) {
-    return base + ' border-accent text-primary';
+    return base + ' border-accent font-bold text-primary';
   }
-  return base + ' border-transparent text-gray-600 hover:border-gray-300 hover:text-primary';
+  return base + ' border-transparent font-medium text-slate-600 hover:border-border hover:text-primary';
 }
 
 /**
@@ -39,11 +39,11 @@ function desktopLinkClass({ isActive }) {
  * @returns {string} The Tailwind classes.
  */
 function mobileLinkClass({ isActive }) {
-  const base = 'flex items-center gap-3 border-l-4 px-4 py-3 font-medium transition-colors';
+  const base = 'flex items-center gap-3 border-l-4 px-4 py-3 text-[16px] font-bold transition-colors';
   if (isActive) {
-    return base + ' border-accent bg-gray-50 text-primary';
+    return base + ' border-accent text-primary';
   }
-  return base + ' border-transparent text-gray-700 hover:bg-gray-50 hover:text-primary';
+  return base + ' border-transparent text-slate-600 hover:text-primary';
 }
 
 /**
@@ -88,9 +88,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
       {/* The inner row lines up with the Layout's content: same max width and side padding. */}
-      <div className="mx-auto flex h-16 max-w-275 items-center justify-between px-4 md:px-8">
+      <div className="mx-auto flex h-18 max-w-275 items-center justify-between px-4 md:px-8">
         <Link to="/" className="flex items-center gap-2 text-primary" onClick={closeMenu}>
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-primary font-heading font-bold text-white">
+          <span className="grid h-8.5 w-8.5 place-items-center rounded-[9px] bg-primary font-heading font-bold text-white">
             C
           </span>
           <span className="font-heading text-lg font-bold">CUNY Connect</span>
@@ -112,7 +112,7 @@ export default function Navbar() {
         {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
         <button
           type="button"
-          className="rounded-md p-2 text-gray-700 transition-colors hover:bg-gray-100 hover:text-primary md:hidden"
+          className="rounded-md p-2 text-slate-600 transition-colors hover:text-primary md:hidden"
           onClick={toggleMenu}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
@@ -126,7 +126,7 @@ export default function Navbar() {
 
       {/* The phone menu panel sits under the bar, with the same links stacked. It only renders while open. */}
       {menuOpen && (
-        <nav id="mobile-menu" className="border-t border-gray-200 bg-white py-2 md:hidden" aria-label="Main">
+        <nav id="mobile-menu" className="border-t border-border bg-white py-2 md:hidden" aria-label="Main">
           {navLinks.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={mobileLinkClass} onClick={closeMenu}>
               {link.label}
