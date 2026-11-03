@@ -3,23 +3,22 @@
   This file holds the colors, fonts, and spacing the whole client uses, and it is where the team's style guide lives.
   Use these variables instead of hard-coded values so the look can change in one place.
   Owner: Person 3
-  The colors and fonts match the Tailwind theme in global.css (bg-primary, bg-accent, font-heading, font-body).
+  The colors and fonts match the Figma design system and the Tailwind theme in global.css.
   TODO: Write down when to use each color and spacing size.
-  TODO: Decide whether headings should get their own font later. For now they use the same system fonts as body text.
   TODO: Keep these values in sync with the @theme block in global.css whenever either one changes.
 */
 :root {
   /* Colors are named by purpose rather than hue, so changing the palette does not mean renaming them everywhere. */
   --color-primary: #1e3a8a;
   --color-accent: #f59e0b;
-  --color-text: #1a1a1a;
-  --color-muted: #666666;
+  --color-text: #172033;
+  --color-muted: #697386;
   --color-bg: #ffffff;
-  --color-border: #dddddd;
+  --color-border: #e6e9ef;
 
-  /* The system font stack loads instantly and looks native on every device. Headings use the same fonts for now. */
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* DM Sans is for body text and Manrope is for headings. Both load from Google Fonts at the top of global.css. */
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Manrope', sans-serif;
 
   /* Spacing follows a quarter-rem scale so gaps line up across pages. */
   --space-1: 0.25rem;
