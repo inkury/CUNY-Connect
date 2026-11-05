@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Computer Science Club",
+    "campus": "Brooklyn College",
+    "description": "A community where tech-minded students learn and grow together.",
+    "approved": true
+  },
+  {
+    "name": "Mathematics Club of Brooklyn College",
+    "campus": "Brooklyn College",
+    "description": "Brings together students who enjoy math.",
+    "approved": true
+  },
+  {
+    "name": "Psychology Club",
+    "campus": "Brooklyn College",
+    "description": "For students interested in psychology.",
+    "approved": true
+  },
+  {
+    "name": "Chabad Club",
+    "campus": "Brooklyn College",
+    "description": "Jewish student community and programming.",
+    "approved": true
+  },
+  {
+    "name": "Cru",
+    "campus": "Brooklyn College",
+    "description": "Christian student fellowship.",
+    "approved": true
+  },
+  {
+    "name": "Brooklyn College",
+    "campus": "Brooklyn College",
+    "description": "Events run by Brooklyn College offices and departments rather than a student club.",
+    "approved": true
+  }
+]

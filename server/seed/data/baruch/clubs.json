@@ -1,0 +1,92 @@
+[
+  {
+    "name": "ISACA Cybersecurity Club",
+    "campus": "Baruch",
+    "description": "Teaches students about IT audit, risk management, and cybersecurity.",
+    "approved": true
+  },
+  {
+    "name": "Financial Quants and Engineers",
+    "campus": "Baruch",
+    "description": "Workshops and projects in data science, risk analysis, and algorithmic trading.",
+    "approved": true
+  },
+  {
+    "name": "E-Sports Association",
+    "campus": "Baruch",
+    "description": "Brings gamers together for casual and competitive play.",
+    "approved": true
+  },
+  {
+    "name": "Wall Street Club",
+    "campus": "Baruch",
+    "description": "Weekly finance speakers, student presentations, and hands-on workshops.",
+    "approved": true
+  },
+  {
+    "name": "Collegiate Association of Women in Business",
+    "campus": "Baruch",
+    "description": "Builds leadership and professional skills for women pursuing business careers.",
+    "approved": true
+  },
+  {
+    "name": "National Association of Black Accountants",
+    "campus": "Baruch",
+    "description": "Mentorship, scholarships, and community for accounting and business students.",
+    "approved": true
+  },
+  {
+    "name": "Japan Club",
+    "campus": "Baruch",
+    "description": "Japanese conversation practice, career workshops, and cultural events.",
+    "approved": true
+  },
+  {
+    "name": "West Indian Culture Club",
+    "campus": "Baruch",
+    "description": "Shares West Indian culture through films, dance, fashion shows, and art.",
+    "approved": true
+  },
+  {
+    "name": "Latin American Student Organization",
+    "campus": "Baruch",
+    "description": "Builds community among Latino students through dinners and social events.",
+    "approved": true
+  },
+  {
+    "name": "Archery Club",
+    "campus": "Baruch",
+    "description": "Free equipment and coaching for beginners, plus local and national competitions.",
+    "approved": true
+  },
+  {
+    "name": "WBMB Radio",
+    "campus": "Baruch",
+    "description": "Student-run radio station training members in broadcasting and production.",
+    "approved": true
+  },
+  {
+    "name": "The Ticker",
+    "campus": "Baruch",
+    "description": "Baruch's student newspaper covering campus news, features, and entertainment.",
+    "approved": true
+  },
+  {
+    "name": "UNICEF at Baruch",
+    "campus": "Baruch",
+    "description": "Raises awareness and funds for children's welfare worldwide.",
+    "approved": true
+  },
+  {
+    "name": "Pre-Law Society",
+    "campus": "Baruch",
+    "description": "Helps students prepare for and apply to law school.",
+    "approved": true
+  },
+  {
+    "name": "Baruch College",
+    "campus": "Baruch",
+    "description": "Events run by Baruch College offices and departments rather than a student club.",
+    "approved": true
+  }
+]
