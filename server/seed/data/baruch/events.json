@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Reading and Writing While Bored",
+    "description": "A workshop on reading and writing closely for college classes.",
+    "dateTime": "2026-11-06T17:30:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Academic",
+    "hostClub": "Baruch College"
+  },
+  {
+    "title": "A Can of Kindness Drive",
+    "description": "Thanksgiving food drive run with the Office of Diversity, Compliance and Equity Initiatives.",
+    "dateTime": "2026-11-10T17:00:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Volunteering",
+    "hostClub": "Pre-Law Society"
+  },
+  {
+    "title": "Hebrew Class",
+    "description": "An open Hebrew language class.",
+    "dateTime": "2026-11-10T21:00:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Cultural",
+    "hostClub": "Baruch College"
+  },
+  {
+    "title": "Designing Organizations for Social Impact",
+    "description": "How an organization's legal structure shapes its mission and social impact.",
+    "dateTime": "2026-11-10T22:30:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Career",
+    "hostClub": "Baruch College"
+  },
+  {
+    "title": "A Can of Kindness Drive",
+    "description": "Thanksgiving food drive run with the Office of Diversity, Compliance and Equity Initiatives.",
+    "dateTime": "2026-11-12T17:00:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Volunteering",
+    "hostClub": "Pre-Law Society"
+  },
+  {
+    "title": "Zotero Citation Management Workshop",
+    "description": "Hands-on intro to Zotero, a free tool for collecting and organizing research sources.",
+    "dateTime": "2026-11-12T17:30:00.000Z",
+    "location": "Online (Zoom)",
+    "campus": "Baruch",
+    "category": "Academic",
+    "hostClub": "Baruch College"
+  },
+  {
+    "title": "Creativity Social: Writing Through Art",
+    "description": "Use artworks from the Mishkin Gallery collection as writing inspiration.",
+    "dateTime": "2026-11-12T17:30:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Arts",
+    "hostClub": "Baruch College"
+  },
+  {
+    "title": "Harman Reading with Sarah M. Broom",
+    "description": "National Book Award winner and Fall 2026 Harman Writer-in-Residence Sarah M. Broom reads from her work.",
+    "dateTime": "2026-11-12T22:00:00.000Z",
+    "location": "Baruch College",
+    "campus": "Baruch",
+    "category": "Arts",
+    "hostClub": "Baruch College"
+  }
+]

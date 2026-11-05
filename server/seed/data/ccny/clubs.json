@@ -1,0 +1,92 @@
+[
+  {
+    "name": "ACM Association for Computing Machinery",
+    "campus": "City College",
+    "description": "Computer science community building industry skills and professional networks.",
+    "approved": true
+  },
+  {
+    "name": "Google Developer Group on Campus",
+    "campus": "City College",
+    "description": "Hands-on workshops, tech talks, and hack weeks on Google technologies.",
+    "approved": true
+  },
+  {
+    "name": "Girls Who Code College Loops",
+    "campus": "City College",
+    "description": "Coding workshops and panels for women interested in tech careers.",
+    "approved": true
+  },
+  {
+    "name": "CCNY Rocketry and Aerospace Engineering",
+    "campus": "City College",
+    "description": "Student team that designs, builds, and launches high-power rockets.",
+    "approved": true
+  },
+  {
+    "name": "National Society of Black Engineers CCNY Chapter",
+    "campus": "City College",
+    "description": "Supports Black engineering students academically and professionally.",
+    "approved": true
+  },
+  {
+    "name": "Engineers Without Borders",
+    "campus": "City College",
+    "description": "Works with communities on sustainable engineering projects.",
+    "approved": true
+  },
+  {
+    "name": "Arab Student Association of CCNY",
+    "campus": "City College",
+    "description": "Celebrates Arab heritage and promotes cross-cultural friendship.",
+    "approved": true
+  },
+  {
+    "name": "Caribbean Students' Association",
+    "campus": "City College",
+    "description": "Brings Caribbean students together through social events and Caribbean Week.",
+    "approved": true
+  },
+  {
+    "name": "Mela Mayhem",
+    "campus": "City College",
+    "description": "A space for South Asian students to share their cultures and host events.",
+    "approved": true
+  },
+  {
+    "name": "CCNY Esports Club",
+    "campus": "City College",
+    "description": "In-house games, tournaments, and help finding teammates.",
+    "approved": true
+  },
+  {
+    "name": "Climb CCNY",
+    "campus": "City College",
+    "description": "Rock climbing community for all skill levels.",
+    "approved": true
+  },
+  {
+    "name": "CCNY Board Game Club",
+    "campus": "City College",
+    "description": "Casual board game meetups for students of every skill level.",
+    "approved": true
+  },
+  {
+    "name": "On the Same Page",
+    "campus": "City College",
+    "description": "Book club for reading and discussing diverse stories.",
+    "approved": true
+  },
+  {
+    "name": "Pre-Law Club",
+    "campus": "City College",
+    "description": "Introduces students from any major to legal careers.",
+    "approved": true
+  },
+  {
+    "name": "City College",
+    "campus": "City College",
+    "description": "Events run by City College offices and departments rather than a student club.",
+    "approved": true
+  }
+]

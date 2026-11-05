@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Zines & the Archives: Zine-Making Workshop",
+    "description": "A zine-making workshop from the Zines & the Archives series.",
+    "dateTime": "2026-11-11T17:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Arts",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Bocon (Theatre Production)",
+    "description": "A student theatre production of Bocon.",
+    "dateTime": "2026-11-12T17:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Arts",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Look Ahead with Black Studies: Major & Minor Info Session",
+    "description": "Learn about the Black Studies major and minor.",
+    "dateTime": "2026-11-12T17:30:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Academic",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Media and Literary Studies: Past, Present and Future",
+    "description": "A conversation in the Rifkind Center series.",
+    "dateTime": "2026-11-16T22:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Academic",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Architecture Undergraduate Open House",
+    "description": "See what the undergraduate architecture program at the Spitzer School offers.",
+    "dateTime": "2026-11-17T22:30:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Academic",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Growth Mindset Workshop",
+    "description": "An in-person workshop on building a growth mindset.",
+    "dateTime": "2026-11-18T18:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Academic",
+    "hostClub": "City College"
+  },
+  {
+    "title": "2026 Langston Hughes Festival",
+    "description": "Honoring poet Jericho Brown and celebrating the FIRE!! centennial and SEEK's 60th anniversary.",
+    "dateTime": "2026-11-19T23:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Arts",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Seat at the Table: South Asians Rise in American Politics",
+    "description": "Film screening and talk.",
+    "dateTime": "2026-11-19T23:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Cultural",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Transgender Day of Remembrance Vigil",
+    "description": "A campus vigil for Transgender Day of Remembrance.",
+    "dateTime": "2026-11-20T21:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Other",
+    "hostClub": "City College"
+  },
+  {
+    "title": "Dominican Veterans of the Armed Forces Website Launch",
+    "description": "Launch event for a website honoring Dominican veterans of the armed forces.",
+    "dateTime": "2026-11-30T23:00:00.000Z",
+    "location": "City College",
+    "campus": "City College",
+    "category": "Cultural",
+    "hostClub": "City College"
+  }
+]

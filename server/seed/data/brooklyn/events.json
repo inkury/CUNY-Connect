@@ -1,0 +1,47 @@
+[
+  {
+    "title": "International Electroacoustic Music Festival",
+    "description": "The 36th biannual festival showcasing new works by established and emerging composers.",
+    "dateTime": "2026-11-07T00:00:00.000Z",
+    "location": "Don Buchwald Theater, Tow Center for the Performing Arts",
+    "campus": "Brooklyn College",
+    "category": "Arts",
+    "hostClub": "Brooklyn College"
+  },
+  {
+    "title": "Seminar: Single-Molecule Super-Resolution Microscopy",
+    "description": "Science seminar with Yang Zhang of NC State and UNC-Chapel Hill.",
+    "dateTime": "2026-11-07T16:00:00.000Z",
+    "location": "Online",
+    "campus": "Brooklyn College",
+    "category": "Academic",
+    "hostClub": "Brooklyn College"
+  },
+  {
+    "title": "Faculty Recital: Kendall Williams, Steel Pan",
+    "description": "An evening of steel pan with Dr. Kendall K. Williams.",
+    "dateTime": "2026-11-08T00:00:00.000Z",
+    "location": "Don Buchwald Theater, Tow Center for the Performing Arts",
+    "campus": "Brooklyn College",
+    "category": "Arts",
+    "hostClub": "Brooklyn College"
+  },
+  {
+    "title": "conTEMPO I",
+    "description": "The Conservatory's new music ensemble performs contemporary works.",
+    "dateTime": "2026-11-10T00:00:00.000Z",
+    "location": "Don Buchwald Theater, Tow Center for the Performing Arts",
+    "campus": "Brooklyn College",
+    "category": "Arts",
+    "hostClub": "Brooklyn College"
+  },
+  {
+    "title": "Mongolian Calligraphy Workshop",
+    "description": "Learn to write your name in traditional Mongolian calligraphy. Refreshments provided.",
+    "dateTime": "2026-11-10T17:30:00.000Z",
+    "location": "West Quad Center, Room 240",
+    "campus": "Brooklyn College",
+    "category": "Cultural",
+    "hostClub": "Brooklyn College"
+  }
+]

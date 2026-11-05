@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Association for Computing Machinery (QC ACM)",
+    "campus": "Queens College",
+    "description": "Computer science chapter with guest talks, competitions, and career help.",
+    "approved": true
+  },
+  {
+    "name": "Girls Who Code",
+    "campus": "Queens College",
+    "description": "Supports women and beginners learning to code.",
+    "approved": true
+  },
+  {
+    "name": "QC Game Development Club",
+    "campus": "Queens College",
+    "description": "For students interested in making video games.",
+    "approved": true
+  },
+  {
+    "name": "ISACA Cyber-Security Club at Queens College",
+    "campus": "Queens College",
+    "description": "For students interested in cybersecurity and IT audit.",
+    "approved": true
+  },
+  {
+    "name": "Hillel Club",
+    "campus": "Queens College",
+    "description": "Student-led group planning Shabbat dinners, holiday events, and social gatherings.",
+    "approved": true
+  },
+  {
+    "name": "Persian Club",
+    "campus": "Queens College",
+    "description": "Monthly events sharing Persian culture, food, and traditions.",
+    "approved": true
+  },
+  {
+    "name": "Bukharian Cultural Club",
+    "campus": "Queens College",
+    "description": "Shares Bukharian Jewish culture with Bukharian and non-Bukharian students.",
+    "approved": true
+  },
+  {
+    "name": "Israel Student Association",
+    "campus": "Queens College",
+    "description": "Social, educational, and holiday events about Israel's history and culture.",
+    "approved": true
+  },
+  {
+    "name": "Queens College",
+    "campus": "Queens College",
+    "description": "Events run by Queens College offices and departments rather than a student club.",
+    "approved": true
+  }
+]

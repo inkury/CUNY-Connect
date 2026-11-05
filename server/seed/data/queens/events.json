@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Roundtable on English Major Careers",
+    "description": "How to start a bookstore, press, or literary organization in Queens, moderated by Lee Norton.",
+    "dateTime": "2026-11-09T17:15:00.000Z",
+    "location": "Klapper Hall Student Gallery, 4th Floor",
+    "campus": "Queens College",
+    "category": "Career",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Jazz Masterclass: Miki Yamanaka, Piano",
+    "description": "A masterclass with jazz pianist Miki Yamanaka.",
+    "dateTime": "2026-11-09T18:00:00.000Z",
+    "location": "Queens College",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Poetry Reading & Conversation with Kimiko Hahn",
+    "description": "A poetry reading followed by a conversation with poet Kimiko Hahn.",
+    "dateTime": "2026-11-09T23:30:00.000Z",
+    "location": "Godwin-Ternbach Museum, Klapper Hall",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Artist Talk: Alannah Farrell",
+    "description": "A talk by artist Alannah Farrell.",
+    "dateTime": "2026-11-10T21:30:00.000Z",
+    "location": "Klapper Hall, Room 672",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Graduate Admissions Webinar",
+    "description": "Explore QC graduate programs, requirements, deadlines, and application tips.",
+    "dateTime": "2026-11-10T22:00:00.000Z",
+    "location": "Online",
+    "campus": "Queens College",
+    "category": "Academic",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "A Life in the Arts: Sasha Giordano",
+    "description": "QC alumna and Hofstra University Museum of Art director talks about her arts career.",
+    "dateTime": "2026-11-17T21:00:00.000Z",
+    "location": "Klapper Hall Student Gallery, 4th Floor",
+    "campus": "Queens College",
+    "category": "Career",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "QC Opera Studio: Die Fledermaus",
+    "description": "A staged production of Die Fledermaus by the QC Opera Studio.",
+    "dateTime": "2026-11-20T00:30:00.000Z",
+    "location": "LeFrak Concert Hall",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Sensations: Fall Dance Concert",
+    "description": "Queens College's annual fall dance concert.",
+    "dateTime": "2026-12-04T00:00:00.000Z",
+    "location": "Goldstein Theatre",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Jazz Ensembles Concert",
+    "description": "A concert by the college's jazz ensembles.",
+    "dateTime": "2026-12-04T00:00:00.000Z",
+    "location": "Choral Room 264, Music Building",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  },
+  {
+    "title": "Percussion Ensemble and Gamelan Concert",
+    "description": "A concert by the percussion ensemble and gamelan.",
+    "dateTime": "2026-12-10T00:00:00.000Z",
+    "location": "LeFrak Concert Hall",
+    "campus": "Queens College",
+    "category": "Arts",
+    "hostClub": "Queens College"
+  }
+]
