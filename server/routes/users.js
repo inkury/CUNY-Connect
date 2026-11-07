@@ -3,18 +3,91 @@
   This file handles the logged-in user's own account, saved events, followed clubs, and dashboard data.
   Owner: Person 1 (PATCH /me) and Person 4 (saved, following, and dashboard routes)
   TODO: Person 1 makes PATCH /me update only the name and campus, never the email, role, or password.
-  Person 4 makes the following routes add or remove a club id with $addToSet and $pull, like the
-  saved routes already do, and makes the dashboard route return saved events plus upcoming events
-  from followed clubs.
+  Person 4's saved, following, and dashboard routes are done.
 */
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Event = require("../models/Event");
+const Club = require("../models/Club");
 const { protect } = require("../middleware/auth");
 const notImplemented = require("../utils/notImplemented");
 
 const router = express.Router();
+
+/**
+ * Adds a club to the logged-in user's followed clubs.
+ *
+ * @param {object} req The incoming request, with the club id in req.params.clubId.
+ * @param {object} res The response object.
+ * @returns {Promise<void>} Sends { followedClubs } with the updated list of followed club ids.
+ */
+async function followClub(req, res) {
+  const { clubId } = req.params;
+  if (!mongoose.isObjectIdOrHexString(clubId)) {
+    return res.status(400).json({ message: "Invalid club id" });
+  }
+
+  // Clubs waiting for admin approval are hidden from students, so they cannot be followed yet.
+  if (!(await Club.exists({ _id: clubId, approved: true }))) {
+    return res.status(404).json({ message: "Club not found" });
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { $addToSet: { followedClubs: clubId } },
+    { returnDocument: "after" },
+  );
+  return res.json({ followedClubs: user.followedClubs });
+}
+
+/**
+ * Removes a club from the logged-in user's followed clubs.
+ *
+ * @param {object} req The incoming request, with the club id in req.params.clubId.
+ * @param {object} res The response object.
+ * @returns {Promise<void>} Sends { followedClubs } with the updated list of followed club ids.
+ */
+async function unfollowClub(req, res) {
+  const { clubId } = req.params;
+  if (!mongoose.isObjectIdOrHexString(clubId)) {
+    return res.status(400).json({ message: "Invalid club id" });
+  }
+
+  // Like unsaving, this skips the club lookup so a user can still unfollow a club that was deleted.
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { $pull: { followedClubs: clubId } },
+    { returnDocument: "after" },
+  );
+  return res.json({ followedClubs: user.followedClubs });
+}
+
+/**
+ * Returns everything the Dashboard page shows for the logged-in user.
+ *
+ * @param {object} req The incoming request, with the logged-in user in req.user.
+ * @param {object} res The response object.
+ * @returns {Promise<void>} Sends { savedEvents, followedEvents, followedClubs }.
+ */
+async function getDashboard(req, res) {
+  const now = new Date();
+  const { savedEvents, followedClubs } = req.user;
+
+  // Only upcoming events are shown, so past saves drop off the dashboard on their own.
+  const [saved, fromFollowed, clubs] = await Promise.all([
+    Event.find({ _id: { $in: savedEvents }, dateTime: { $gte: now } })
+      .sort({ dateTime: 1 })
+      .populate("hostClub", "_id name campus"),
+    Event.find({ hostClub: { $in: followedClubs }, dateTime: { $gte: now } })
+      .sort({ dateTime: 1 })
+      .populate("hostClub", "_id name campus"),
+    // The followed clubs are sent too, so the page can show each one with an Unfollow button.
+    Club.find({ _id: { $in: followedClubs } }).select("_id name campus"),
+  ]);
+
+  return res.json({ savedEvents: saved, followedEvents: fromFollowed, followedClubs: clubs });
+}
 
 /**
  * Adds an event to the logged-in user's saved events.
@@ -77,10 +150,10 @@ router.post("/me/saved/:eventId", saveEvent);
 
 router.delete("/me/saved/:eventId", unsaveEvent);
 
-router.post("/me/following/:clubId", notImplemented);
+router.post("/me/following/:clubId", followClub);
 
-router.delete("/me/following/:clubId", notImplemented);
+router.delete("/me/following/:clubId", unfollowClub);
 
-router.get("/me/dashboard", notImplemented);
+router.get("/me/dashboard", getDashboard);
 
 module.exports = router;
