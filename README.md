@@ -118,7 +118,7 @@ Every user route needs a login.
 - DELETE /api/users/me/saved/:eventId unsaves an event. Person 4.
 - POST /api/users/me/following/:clubId follows a club. Person 4.
 - DELETE /api/users/me/following/:clubId unfollows a club. Person 4.
-- GET /api/users/me/dashboard returns your saved events and events from clubs you follow. Person 4.
+- GET /api/users/me/dashboard returns your upcoming saved events, upcoming events from clubs you follow, and the clubs you follow. Person 4.
 
 ## Events (Person 2)
 
