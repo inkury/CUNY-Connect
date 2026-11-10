@@ -79,7 +79,7 @@ router.post('/login', async (req, res, next) => {
 
 // Only this route needs a token, because register and login are how a user gets one.
 router.get('/me', protect, (req, res) => {
-  res,json({ user: req.user });
+  res.json({ user: req.user });
 });
 
 module.exports = router;
