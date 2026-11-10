@@ -6,11 +6,12 @@
   Owner: Person 2
 */
 const mongoose = require('mongoose');
+const { CAMPUSES, CATEGORIES } = require('../constants');
 
 const clubSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  // Add enum validation when the allowed campus list is defined.
-  campus: { type: String, index: true },
+  campus: { type: String, enum: CAMPUSES, index: true },
+  category: { type: String, enum: CATEGORIES, index: true },
   description: String,
   // Populate officers to load User profiles; User excludes passwords by default.
   officers: {
