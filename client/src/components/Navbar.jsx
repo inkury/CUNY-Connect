@@ -1,20 +1,21 @@
 /*
   Navigation bar for the CUNY-Connect client.
-  This file renders the bar at the top of every page inside Layout: the logo, the main links, and the profile link.
+  This file renders the bar at the top of every page inside Layout: the logo, the main links, and the account links.
+  It reads the logged-in user from useAuth(). Logged-out visitors see Events and Log in. Logged-in users also see
+  Dashboard, their initials and first name (linking to /profile), and Log out, plus Officer or Admin when they have
+  that role. While the saved session is being checked, a gray circle holds the avatar's place.
   On phones the links fold into a menu button that opens a dropdown panel.
   Owner: Person 3
-  TODO: When AuthContext is ready, show the logged-in user's initials and first name in the profile link,
-  or a "Log in" link if nobody is logged in.
-  TODO: Add a Log out button when logged in.
-  TODO: Show the Officer and Admin links only to users with those roles.
 */
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
 // The links shown on desktop and in the phone menu. "end" makes Events active only on /, not on every page.
+// "loggedInOnly" links are hidden from guests, following the Figma guest design.
 const navLinks = [
   { to: '/', label: 'Events', end: true },
-  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/dashboard', label: 'Dashboard', loggedInOnly: true },
 ];
 
 /**
@@ -47,10 +48,27 @@ function mobileLinkClass({ isActive }) {
 }
 
 /**
+ * Builds the initials for the avatar from a full name.
+ *
+ * @param {string} name The full name, for example "Saba Chechelashvili".
+ * @returns {string} Up to two letters, for example "SC", or "S" for a one word name.
+ */
+function getInitials(name) {
+  // filter(Boolean) drops the empty pieces that extra spaces would leave behind.
+  const parts = name.trim().split(' ').filter(Boolean);
+  if (parts.length === 0) {
+    return '';
+  }
+  const first = parts[0][0];
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+  return (first + last).toUpperCase();
+}
+
+/**
  * Renders a round light navy avatar with the user's initials, or a generic person icon when there are none.
  *
  * @param {object} props The component props.
- * @param {string} [props.initials] The letters to show, for example "JM". Leave it out to show the icon.
+ * @param {string} [props.initials] The letters to show, for example "SC". Leave it out to show the icon.
  * @returns {JSX.Element} The avatar.
  */
 function Avatar({ initials }) {
@@ -74,6 +92,8 @@ function Avatar({ initials }) {
  * @returns {JSX.Element} The navbar.
  */
 export default function Navbar() {
+  const { user, loading, logout } = useAuth();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   function toggleMenu() {
@@ -83,6 +103,68 @@ export default function Navbar() {
   // Closing the menu after a tap means it does not stay open on the next page.
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  function handleLogout() {
+    logout();
+    closeMenu();
+    navigate('/');
+  }
+
+  // Guests only see links that are not marked loggedInOnly.
+  const visibleLinks = navLinks.filter((link) => user || !link.loggedInOnly);
+
+  /**
+   * Builds the role and account links. Desktop and the phone menu share them, each with its own classes.
+   *
+   * @param {function} linkClass desktopLinkClass or mobileLinkClass.
+   * @param {string} buttonClass Extra classes that make the Log out button fit its menu.
+   * @param {string} placeholderClass Classes that line the loading circle up with the links in its menu.
+   * @returns {JSX.Element} The links, or a gray circle while the saved session is still being checked.
+   */
+  function renderAccountLinks(linkClass, buttonClass, placeholderClass) {
+    // While loading, the user is not known yet, so showing Log in now would flash it for a logged-in user.
+    // The gray circle is the same size as the avatar, so the bar does not jump when the real links arrive.
+    if (loading) {
+      return (
+        <span className={placeholderClass} aria-hidden="true">
+          <span className="block h-8 w-8 rounded-full bg-border" />
+        </span>
+      );
+    }
+
+    if (!user) {
+      return (
+        <NavLink to="/login" className={linkClass} onClick={closeMenu}>
+          Log in
+        </NavLink>
+      );
+    }
+
+    // The ?? '' keeps the bar from crashing if a user somehow has no name.
+    const name = user.name ?? '';
+    return (
+      <>
+        {user.role === 'officer' && (
+          <NavLink to="/officer" className={linkClass} onClick={closeMenu}>
+            Officer
+          </NavLink>
+        )}
+        {user.role === 'admin' && (
+          <NavLink to="/admin" className={linkClass} onClick={closeMenu}>
+            Admin
+          </NavLink>
+        )}
+        <NavLink to="/profile" className={linkClass} onClick={closeMenu}>
+          <Avatar initials={getInitials(name)} />
+          {name.trim().split(' ')[0] || 'Profile'}
+        </NavLink>
+        {/* Log out is a button, not a link, because it does something instead of opening a page. */}
+        <button type="button" className={linkClass({ isActive: false }) + ' cursor-pointer ' + buttonClass} onClick={handleLogout}>
+          Log out
+        </button>
+      </>
+    );
   }
 
   return (
@@ -98,15 +180,12 @@ export default function Navbar() {
 
         {/* Desktop links are hidden on phones and shown as a row from md (768px) up. */}
         <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
-          {navLinks.map((link) => (
+          {visibleLinks.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={desktopLinkClass}>
               {link.label}
             </NavLink>
           ))}
-          <NavLink to="/profile" className={desktopLinkClass}>
-            <Avatar />
-            Profile
-          </NavLink>
+          {renderAccountLinks(desktopLinkClass, '', 'flex h-18 items-center px-1')}
         </nav>
 
         {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
@@ -127,15 +206,12 @@ export default function Navbar() {
       {/* The phone menu panel sits under the bar, with the same links stacked. It only renders while open. */}
       {menuOpen && (
         <nav id="mobile-menu" className="border-t border-border bg-white py-2 md:hidden" aria-label="Main">
-          {navLinks.map((link) => (
+          {visibleLinks.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={mobileLinkClass} onClick={closeMenu}>
               {link.label}
             </NavLink>
           ))}
-          <NavLink to="/profile" className={mobileLinkClass} onClick={closeMenu}>
-            <Avatar />
-            Profile
-          </NavLink>
+          {renderAccountLinks(mobileLinkClass, 'w-full text-left', 'flex border-l-4 border-transparent px-4 py-3')}
         </nav>
       )}
     </header>
