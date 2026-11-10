@@ -12,7 +12,7 @@ import Icon from './Icon.jsx';
 import { formatEventDateTime, getCountdownLabel, getMonthShort, getWeekdayShort } from '../utils/dateHelpers.js';
 
 // The start and end colors of the banner gradient for each category.
-const categoryGradients = {
+export const categoryGradients = {
   Tech: ['#203D8D', '#4166BE'],
   Cultural: ['#B95813', '#F49A10'],
   Career: ['#1B7870', '#45BBAF'],
