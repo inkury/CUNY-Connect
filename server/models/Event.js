@@ -6,14 +6,15 @@
   Owner: Person 2
 */
 const mongoose = require('mongoose');
+const { CAMPUSES, CATEGORIES } = require('../constants');
 
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
   dateTime: { type: Date, required: true, index: true },
   location: String,
-  campus: { type: String, index: true },
-  category: { type: String, index: true },
+  campus: { type: String, enum: CAMPUSES, index: true },
+  category: { type: String, enum: CATEGORIES, index: true },
   hostClub: { type: mongoose.Schema.Types.ObjectId, ref: 'Club', required: true },
 }, { timestamps: true });
 
