@@ -1,7 +1,7 @@
 /*
   Event card for the CUNY-Connect client.
   This file shows a short preview of one event, and it is reused by the Feed, Dashboard, and ClubProfile pages.
-  All of its data comes in through the event prop.
+  All of its data comes in through the event prop. An event whose club was deleted shows "Unknown club".
   Owner: Person 3
   TODO: Connect the save button to Abinash's save route. For now it only changes on this screen and resets on reload.
   TODO: Use the category list from client/src/constants.js (Kenneth) once it exists, instead of the map below.
@@ -100,11 +100,16 @@ export default function EventCard({ event }) {
 
         {/* mt-auto pushes the footer to the bottom, so the footers line up across a row. */}
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-3">
+          {/* hostClub is null when its club was deleted, so the card shows "Unknown club" without a link instead of crashing. */}
           <p className="min-w-0 truncate text-[14px] leading-5 text-slate">
             By{' '}
-            <Link to={`/clubs/${event.hostClub._id}`} className="font-bold text-primary">
-              {event.hostClub.name}
-            </Link>
+            {event.hostClub?._id ? (
+              <Link to={`/clubs/${event.hostClub._id}`} className="font-bold text-primary">
+                {event.hostClub.name}
+              </Link>
+            ) : (
+              <span className="font-bold">Unknown club</span>
+            )}
           </p>
           <Link
             to={`/events/${event._id}`}
