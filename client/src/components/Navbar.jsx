@@ -1,10 +1,12 @@
 /*
   Navigation bar for the CUNY-Connect client.
   This file renders the bar at the top of every page inside Layout: the logo, the main links, and the account links.
-  It reads the logged-in user from useAuth(). Logged-out visitors see Events and Log in. Logged-in users also see
-  Dashboard, their initials and first name (linking to /profile), and Log out, plus Officer or Admin when they have
-  that role. While the saved session is being checked, a gray circle holds the avatar's place.
-  On phones the links fold into a menu button that opens a dropdown panel.
+  It reads the logged-in user from useAuth(). Logged-out visitors see Events and a navy Sign in button (to /login).
+  Logged-in users also see Dashboard, their initials and first name (linking to /profile), and Log out, plus
+  Officer or Admin when they have that role. While the saved session is being checked, a gray circle holds the
+  avatar's place.
+  On phones the links fold into a menu button that opens a dropdown panel. Logged-out visitors also get a bold
+  "Sign in" text link next to the menu button, and inside the menu Sign in is a normal row like the other links.
   Owner: Person 3
 */
 import { useState } from 'react';
@@ -34,18 +36,19 @@ function desktopLinkClass({ isActive }) {
 }
 
 /**
- * Picks the classes for a link in the phone menu.
+ * Picks the classes for a link in the phone menu. The Figma phone menu has no current-page highlight,
+ * so every row looks the same: navy text with a thin divider line underneath.
  *
- * @param {{isActive: boolean}} state NavLink's state.
  * @returns {string} The Tailwind classes.
  */
-function mobileLinkClass({ isActive }) {
-  const base = 'flex items-center gap-3 border-l-4 px-4 py-3 text-[16px] font-bold transition-colors';
-  if (isActive) {
-    return base + ' border-accent text-primary';
-  }
-  return base + ' border-transparent text-slate-600 hover:text-primary';
+function mobileLinkClass() {
+  return 'flex items-center gap-3 border-b border-border py-3.5 text-[16px] leading-5 font-bold text-primary transition-colors hover:text-primary-dark';
 }
+
+// The guest Sign in button from the Figma: solid navy, 42px tall, with a soft navy shadow.
+// It is a plain Link, not a NavLink, so it never gets the amber underline the other links use.
+const signInClass =
+  'flex h-10.5 items-center justify-center rounded-[10px] bg-primary px-5 text-[15px] font-bold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark';
 
 /**
  * Builds the initials for the avatar from a full name.
@@ -120,10 +123,11 @@ export default function Navbar() {
    * @param {function} linkClass desktopLinkClass or mobileLinkClass.
    * @param {string} buttonClass Extra classes that make the Log out button fit its menu.
    * @param {string} placeholderClass Classes that line the loading circle up with the links in its menu.
+   * @param {boolean} signInAsButton True shows Sign in as the navy button (desktop), false as a normal menu link (phone).
    * @returns {JSX.Element} The links, or a gray circle while the saved session is still being checked.
    */
-  function renderAccountLinks(linkClass, buttonClass, placeholderClass) {
-    // While loading, the user is not known yet, so showing Log in now would flash it for a logged-in user.
+  function renderAccountLinks(linkClass, buttonClass, placeholderClass, signInAsButton) {
+    // While loading, the user is not known yet, so showing Sign in now would flash it for a logged-in user.
     // The gray circle is the same size as the avatar, so the bar does not jump when the real links arrive.
     if (loading) {
       return (
@@ -134,9 +138,19 @@ export default function Navbar() {
     }
 
     if (!user) {
+      // Desktop shows the navy button. The phone menu shows Sign in as a normal menu link, like the Figma guest menu.
+      if (signInAsButton) {
+        return (
+          <div className="flex items-center">
+            <Link to="/login" className={signInClass} onClick={closeMenu}>
+              Sign in
+            </Link>
+          </div>
+        );
+      }
       return (
         <NavLink to="/login" className={linkClass} onClick={closeMenu}>
-          Log in
+          Sign in
         </NavLink>
       );
     }
@@ -170,7 +184,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
       {/* The inner row lines up with the Layout's content: same max width and side padding. */}
-      <div className="mx-auto flex h-18 max-w-275 items-center justify-between px-4 md:px-8">
+      <div className="mx-auto flex h-16 max-w-275 items-center justify-between px-4 md:h-18 md:px-8">
         <Link to="/" className="flex items-center gap-2 text-primary" onClick={closeMenu}>
           <span className="grid h-8.5 w-8.5 place-items-center rounded-[9px] bg-primary font-heading font-bold text-white">
             C
@@ -185,33 +199,44 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
-          {renderAccountLinks(desktopLinkClass, '', 'flex h-18 items-center px-1')}
+          {renderAccountLinks(desktopLinkClass, '', 'flex h-18 items-center px-1', true)}
         </nav>
 
-        {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
-        <button
-          type="button"
-          className="rounded-md p-2 text-slate-600 transition-colors hover:text-primary md:hidden"
-          onClick={toggleMenu}
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-        >
-          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-            {menuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-          </svg>
-        </button>
+        {/* The phone controls are grouped so they stay together on the right. The whole group hides from md (768px) up. */}
+        <div className="flex items-center gap-2 md:hidden">
+          {/* Guests get a quick Sign in link next to the menu button. It waits for loading so it never flashes for a logged-in user,
+              and hides while the menu is open, because the menu already has its own Sign in row. */}
+          {!loading && !user && !menuOpen && (
+            <Link to="/login" className="text-[15px] font-bold text-primary" onClick={closeMenu}>
+              Sign in
+            </Link>
+          )}
+
+          {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
+          <button
+            type="button"
+            className="-mr-2 rounded-md p-2 text-primary transition-colors hover:text-primary-dark md:hidden"
+            onClick={toggleMenu}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              {menuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* The phone menu panel sits under the bar, with the same links stacked. It only renders while open. */}
       {menuOpen && (
-        <nav id="mobile-menu" className="border-t border-border bg-white py-2 md:hidden" aria-label="Main">
+        <nav id="mobile-menu" className="flex flex-col border-t border-border bg-white px-5 pb-3 md:hidden" aria-label="Main">
           {visibleLinks.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={mobileLinkClass} onClick={closeMenu}>
               {link.label}
             </NavLink>
           ))}
-          {renderAccountLinks(mobileLinkClass, 'w-full text-left', 'flex border-l-4 border-transparent px-4 py-3')}
+          {renderAccountLinks(mobileLinkClass, 'w-full text-left', 'flex border-b border-border py-3.5', false)}
         </nav>
       )}
     </header>
