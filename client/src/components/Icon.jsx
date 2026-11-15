@@ -1,6 +1,6 @@
 /*
   Small line icons for the CUNY-Connect client.
-  This file draws the icons used on event cards as inline SVGs, so the app does not need an icon library.
+  This file draws the icons used on event cards and the Feed hero as inline SVGs, so the app does not need an icon library.
   Owner: Person 3
   TODO: Add more icons here as new pages need them.
 */
@@ -22,13 +22,20 @@ const iconShapes = {
   bookmark: <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" />,
   'bookmark-filled': <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z" fill="currentColor" />,
   'chevron-right': <path d="m9 6 6 6-6 6" />,
+  users: (
+    <>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+    </>
+  ),
 };
 
 /**
  * Renders one icon as an inline SVG. Its color comes from the text color of the parent, for example text-primary.
  *
  * @param {object} props The component props.
- * @param {string} props.name Which icon to draw: "calendar", "map-pin", "bookmark", "bookmark-filled", or "chevron-right".
+ * @param {string} props.name Which icon to draw: "calendar", "map-pin", "bookmark", "bookmark-filled", "chevron-right", or "users".
  * @param {number} [props.size] The width and height in pixels.
  * @param {string} [props.className] Extra Tailwind classes.
  * @returns {JSX.Element} The icon.
