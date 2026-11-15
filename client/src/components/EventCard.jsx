@@ -3,12 +3,11 @@
   This file shows a short preview of one event, and it is reused by the Feed, Dashboard, and ClubProfile pages.
   All of its data comes in through the event prop. An event whose club was deleted shows "Unknown club".
   Owner: Person 3
-  TODO: Connect the save button to Abinash's save route. For now it only changes on this screen and resets on reload.
   TODO: Use the category list from client/src/constants.js (Kenneth) once it exists, instead of the map below.
 */
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from './Icon.jsx';
+import useSaveEvent from '../hooks/useSaveEvent.js';
 import { formatEventDateTime, getCountdownLabel, getMonthShort, getWeekdayShort } from '../utils/dateHelpers.js';
 
 // The start and end colors of the banner gradient for each category.
@@ -32,11 +31,8 @@ export const categoryGradients = {
  * @returns {JSX.Element} The event card.
  */
 export default function EventCard({ event }) {
-  const [saved, setSaved] = useState(false);
-
-  function toggleSaved() {
-    setSaved(!saved);
-  }
+  // The shared hook saves to the server, so the bookmark matches EventDetail and stays after a reload.
+  const { saved, toggleSave } = useSaveEvent(event._id);
 
   // Categories that are not in the map fall back to the gray Other gradient.
   const [gradientStart, gradientEnd] = categoryGradients[event.category] ?? categoryGradients.Other;
@@ -68,11 +64,10 @@ export default function EventCard({ event }) {
           <span className="inline-flex h-7 items-center rounded-full bg-primary-50 px-3 font-body text-[11px] font-extrabold tracking-wide text-primary uppercase">
             {event.category}
           </span>
-          {/* TODO: Connect this button to Abinash's save route. */}
           <button
             type="button"
             className={'cursor-pointer transition-colors hover:text-primary ' + (saved ? 'text-primary' : 'text-slate')}
-            onClick={toggleSaved}
+            onClick={toggleSave}
             aria-label={saved ? 'Unsave event' : 'Save event'}
             aria-pressed={saved}
           >

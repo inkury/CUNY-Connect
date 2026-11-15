@@ -3,12 +3,12 @@
   This page shows the full details of one event, loaded from GET /events/:id.
   Owner: Person 3
   TODO: Style this page to match the Figma.
-  TODO: Add a save button that calls Person 4's POST and DELETE /users/me/saved/:eventId. Both need a login,
-  so guests should be sent to /login instead.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api/client.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import useSaveEvent from '../hooks/useSaveEvent.js';
 import { formatEventDateTime } from '../utils/dateHelpers.js';
 
 /**
@@ -22,6 +22,10 @@ export default function EventDetail() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // The page already has its own loading flag, so the auth one is renamed to authLoading.
+  const { user, loading: authLoading } = useAuth();
+  // The hook uses the id from the URL, so it can run before the event finishes loading.
+  const { saved, toggleSave } = useSaveEvent(id);
 
   // Load the event again whenever the id in the URL changes.
   useEffect(() => {
@@ -90,6 +94,17 @@ export default function EventDetail() {
           'Unknown club'
         )}
       </p>
+
+      {/* A plain save button for now. Guests who click it are sent to the login page. */}
+      <button
+        type="button"
+        className="cursor-pointer self-start rounded-[10px] border border-primary px-4 py-2 font-bold text-primary"
+        onClick={toggleSave}
+        aria-pressed={saved}
+      >
+        {saved ? 'Saved' : 'Save event'}
+      </button>
+      {!authLoading && !user && <p className="text-[14px]">Sign in to save events</p>}
     </article>
   );
 }
