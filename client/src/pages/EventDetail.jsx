@@ -2,8 +2,8 @@
   EventDetail page for CUNY-Connect, shown at /events/:id.
   This page shows the full details of one event, loaded from GET /events/:id.
   Owner: Person 3
-  The main card matches the Figma: a category banner with a big icon, then the title and the description.
-  TODO: Move the date, location, host club, and save button into the Figma info card beside the main card.
+  It matches the Figma: the main card with the category banner, title, and description, and an info card with the
+  date, location, host club, and save button. On desktop the info card sits beside the main card; on phones it goes below.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import Icon from '../components/Icon.jsx';
 import { categoryGradients } from '../components/EventCard.jsx';
 import useSaveEvent from '../hooks/useSaveEvent.js';
-import { formatEventDateTime } from '../utils/dateHelpers.js';
+import { formatEventDate, formatEventTime } from '../utils/dateHelpers.js';
 
 // The big banner icon for each category in client/src/constants.js.
 const categoryIcons = {
@@ -26,6 +26,12 @@ const categoryIcons = {
   Volunteering: 'heart',
   Other: 'sparkle',
 };
+
+// Shared classes for the info card rows, buttons, and small text, so the matching pieces stay the same.
+const infoRowClass = 'flex items-start gap-3.5 text-[14px] leading-5 text-slate';
+const infoIconClass = 'grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary-50 text-primary';
+const buttonClass = 'flex w-full items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
+const captionClass = 'text-center text-[12px] leading-4 text-slate';
 
 /**
  * Renders the details of one event.
@@ -91,9 +97,9 @@ export default function EventDetail() {
     const iconName = categoryIcons[event.category] ?? categoryIcons.Other;
 
     content = (
-      <>
-        {/* The main card. It is 710px wide on large screens, like the Figma, so the info card can sit beside it later. */}
-        <article className="overflow-hidden rounded-2xl border border-border bg-white lg:max-w-177.5">
+      // Phones stack the two cards. Desktop puts them side by side, with the main card taking the space left over.
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10">
+        <article className="min-w-0 overflow-hidden rounded-2xl border border-border bg-white lg:flex-1">
           {/* The gradient colors change per category, so they are passed in as CSS variables. The angle changes at md. */}
           <div
             className="relative flex h-52.5 items-center justify-center overflow-hidden bg-[linear-gradient(141.81deg,var(--from)_0%,var(--to)_71.43%)] md:h-67.5 md:pt-6 md:pl-6 md:bg-[linear-gradient(153.05deg,var(--from)_0%,var(--to)_71.43%)]"
@@ -127,41 +133,74 @@ export default function EventDetail() {
           </div>
         </article>
 
-        {/* These stay plain for now. Part 2 moves them into the info card next to the main card. */}
-        <div className="mt-5 flex flex-col gap-3 md:mt-6">
-          <p>
-            <strong className="text-ink">When:</strong> {formatEventDateTime(event.dateTime)}
-          </p>
-          <p>
-            <strong className="text-ink">Where:</strong> {event.location}
-          </p>
-          <p>
-            <strong className="text-ink">Campus:</strong> {event.campus}
-          </p>
-          {/* hostClub is null when its club was deleted, so the page shows "Unknown club" without a link instead of crashing. */}
-          <p>
-            <strong className="text-ink">Hosted by:</strong>{' '}
-            {event.hostClub?._id ? (
-              <Link to={`/clubs/${event.hostClub._id}`} className="font-bold">
-                {event.hostClub.name}
-              </Link>
-            ) : (
-              'Unknown club'
-            )}
-          </p>
+        {/* The info card. On desktop it is 350px wide and stays in view while the page scrolls, just below the navbar. */}
+        <aside className="flex flex-col gap-4.5 rounded-2xl border border-border bg-white p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0">
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="calendar" size={18} />
+            </span>
+            <p className="min-w-0">
+              <span className="block font-bold text-ink">{formatEventDate(event.dateTime)}</span>
+              <span className="mt-0.5 block">{formatEventTime(event.dateTime)}</span>
+            </p>
+          </div>
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="map-pin" size={18} />
+            </span>
+            <p className="min-w-0">
+              <span className="block font-bold text-ink">{event.location}</span>
+              <span className="mt-0.5 block">{event.campus}</span>
+            </p>
+          </div>
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="users" size={18} />
+            </span>
+            {/* hostClub is null when its club was deleted, so the card shows "Unknown club" without a link instead of crashing. */}
+            <p className="min-w-0 font-bold">
+              <span className="block text-ink">Hosted by</span>
+              {event.hostClub?._id ? (
+                <Link to={`/clubs/${event.hostClub._id}`} className="mt-0.5 block">
+                  {event.hostClub.name} →
+                </Link>
+              ) : (
+                <span className="mt-0.5 block text-ink">Unknown club</span>
+              )}
+            </p>
+          </div>
 
-          {/* A plain save button for now. Guests who click it are sent to the login page. */}
-          <button
-            type="button"
-            className="cursor-pointer self-start rounded-[10px] border border-primary px-4 py-2 font-bold text-primary"
-            onClick={toggleSave}
-            aria-pressed={saved}
-          >
-            {saved ? 'Saved' : 'Save event'}
-          </button>
-          {!authLoading && !user && <p className="text-[14px]">Sign in to save events</p>}
-        </div>
-      </>
+          {saved ? (
+            <>
+              <p className="flex items-center gap-2.5 rounded-[11px] bg-success-50 px-4 py-3.5 text-[14px] leading-5 font-bold text-success">
+                <Icon name="check" size={20} />
+                Saved
+              </p>
+              <Link to="/dashboard" className={buttonClass + ' border border-border bg-white text-primary'}>
+                View saved events
+              </Link>
+              <p className={captionClass}>
+                It’s saved on your dashboard.{' '}
+                <button type="button" className="cursor-pointer font-bold text-primary hover:text-primary-dark" onClick={toggleSave}>
+                  Unsave
+                </button>
+              </p>
+            </>
+          ) : (
+            <>
+              {/* Guests who click Save are sent to the login page by the hook. */}
+              <button
+                type="button"
+                className={buttonClass + ' cursor-pointer bg-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark'}
+                onClick={toggleSave}
+              >
+                Save event
+              </button>
+              {!authLoading && !user && <p className={captionClass}>Sign in to save events.</p>}
+            </>
+          )}
+        </aside>
+      </div>
     );
   }
 

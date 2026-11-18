@@ -1,6 +1,6 @@
 /*
   Date helpers for the CUNY-Connect client.
-  This file turns an event's ISO dateTime string into the short text shown on event cards.
+  This file turns an event's ISO dateTime string into the short text shown on event cards and the event page.
   Owner: Person 3
   TODO: Decide whether times should always show in New York time. For now they use the viewer's own time zone.
 */
@@ -28,16 +28,33 @@ export function getWeekdayShort(dateTime) {
 }
 
 /**
+ * Formats the date for the event page, for example "Sat, Oct 19".
+ *
+ * @param {string} dateTime The ISO date string.
+ * @returns {string} The weekday, month, and day.
+ */
+export function formatEventDate(dateTime) {
+  return new Date(dateTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+/**
+ * Formats the start time for the event page, for example "9:00 AM".
+ *
+ * @param {string} dateTime The ISO date string.
+ * @returns {string} The start time.
+ */
+export function formatEventTime(dateTime) {
+  return new Date(dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+/**
  * Formats the date and time for the calendar row on a card.
  *
  * @param {string} dateTime The ISO date string.
  * @returns {string} The date and time, for example "Sat, Nov 7 · 6:00 PM".
  */
 export function formatEventDateTime(dateTime) {
-  const date = new Date(dateTime);
-  const day = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-  return day + ' · ' + time;
+  return formatEventDate(dateTime) + ' · ' + formatEventTime(dateTime);
 }
 
 /**

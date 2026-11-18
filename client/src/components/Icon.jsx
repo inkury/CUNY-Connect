@@ -31,6 +31,7 @@ const iconShapes = {
     </>
   ),
   'arrow-left': <path d="M19 12H5M12 19l-7-7 7-7" />,
+  check: <path d="M20 6 9 17l-5-5" />,
   // Category icons for the event page banner: Tech, Academic, Career, Cultural, Sports, Arts, Volunteering, and Other.
   // Social uses the users icon above.
   code: <path d="m16 18 6-6-6-6M8 6l-6 6 6 6" />,
