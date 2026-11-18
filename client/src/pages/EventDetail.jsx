@@ -2,14 +2,36 @@
   EventDetail page for CUNY-Connect, shown at /events/:id.
   This page shows the full details of one event, loaded from GET /events/:id.
   Owner: Person 3
-  TODO: Style this page to match the Figma.
+  It matches the Figma: the main card with the category banner, title, and description, and an info card with the
+  date, location, host club, and save button. On desktop the info card sits beside the main card; on phones it goes below.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import Icon from '../components/Icon.jsx';
+import { categoryGradients } from '../components/EventCard.jsx';
 import useSaveEvent from '../hooks/useSaveEvent.js';
-import { formatEventDateTime } from '../utils/dateHelpers.js';
+import { formatEventDate, formatEventTime } from '../utils/dateHelpers.js';
+
+// The big banner icon for each category in client/src/constants.js.
+const categoryIcons = {
+  Tech: 'code',
+  Academic: 'book',
+  Career: 'briefcase',
+  Cultural: 'globe',
+  Social: 'users',
+  Sports: 'trophy',
+  Arts: 'palette',
+  Volunteering: 'heart',
+  Other: 'sparkle',
+};
+
+// Shared classes for the info card rows, buttons, and small text, so the matching pieces stay the same.
+const infoRowClass = 'flex items-start gap-3.5 text-[14px] leading-5 text-slate';
+const infoIconClass = 'grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary-50 text-primary';
+const buttonClass = 'flex w-full items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
+const captionClass = 'text-center text-[12px] leading-4 text-slate';
 
 /**
  * Renders the details of one event.
@@ -63,48 +85,136 @@ export default function EventDetail() {
     };
   }, [id]);
 
+  // Only one of these shows at a time: loading, the error or not-found message, or the event.
+  let content;
   if (loading) {
-    return <p className="text-slate">Loading event...</p>;
-  }
-  if (error) {
-    return <p className="text-slate">{error}</p>;
+    content = <p className="text-slate">Loading event...</p>;
+  } else if (error) {
+    content = <p className="text-slate">{error}</p>;
+  } else {
+    // The banner reuses the EventCard gradient for the category. Unknown categories fall back to Other.
+    const [gradientStart, gradientEnd] = categoryGradients[event.category] ?? categoryGradients.Other;
+    const iconName = categoryIcons[event.category] ?? categoryIcons.Other;
+
+    content = (
+      // Phones stack the two cards. Desktop puts them side by side, with the main card taking the space left over.
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10">
+        <article className="min-w-0 overflow-hidden rounded-2xl border border-border bg-white lg:flex-1">
+          {/* The gradient colors change per category, so they are passed in as CSS variables. The angle changes at md. */}
+          <div
+            className="relative flex h-52.5 items-center justify-center overflow-hidden bg-[linear-gradient(141.81deg,var(--from)_0%,var(--to)_71.43%)] md:h-67.5 md:pt-6 md:pl-6 md:bg-[linear-gradient(153.05deg,var(--from)_0%,var(--to)_71.43%)]"
+            style={{ '--from': gradientStart, '--to': gradientEnd }}
+          >
+            {/* A thick soft ring behind the icon, a little off center like the Figma. */}
+            <span
+              className="absolute top-1/2 left-[calc(50%-3px)] h-67.5 w-67.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-48 border-white/12 md:left-[calc(50%+31px)] md:h-77.5 md:w-77.5 md:border-60"
+              aria-hidden="true"
+            />
+            <span className="absolute top-5 left-5 rounded-full bg-primary-50 px-3 py-1.25 font-body text-[11px] leading-4.5 font-extrabold tracking-[1.54px] text-ink uppercase md:top-6 md:left-7">
+              {event.category}
+            </span>
+            {/* The Figma icon is 56px on phones and 72px on desktop, both with a 3px line. */}
+            <Icon name={iconName} size={56} strokeWidth={1.29} className="relative text-white md:hidden" />
+            <Icon name={iconName} size={72} strokeWidth={1} className="relative hidden text-white md:block" />
+          </div>
+
+          <div className="flex flex-col gap-3 px-5 pt-6 pb-7 md:gap-3.5 md:px-10 md:pt-9 md:pb-10">
+            <p className="font-body text-[12px] leading-4.5 font-extrabold tracking-[1.68px] text-primary uppercase">
+              Featured event
+            </p>
+            <h1 className="text-[34px] leading-9.5 tracking-[-0.85px] md:text-[48px] md:leading-13.5 md:tracking-[-1.2px]">
+              {event.title}
+            </h1>
+            {/* On desktop the About section has 20px of extra space above it, and 10px between the heading and the text. */}
+            <h2 className="text-[22px] leading-7 tracking-[-0.44px] md:pt-5 md:text-[24px] md:leading-7.5 md:tracking-[-0.48px]">
+              About this event
+            </h2>
+            <p className="text-[16px] leading-6.5 text-slate md:-mt-1">{event.description}</p>
+          </div>
+        </article>
+
+        {/* The info card. On desktop it is 350px wide and stays in view while the page scrolls, just below the navbar. */}
+        <aside className="flex flex-col gap-4.5 rounded-2xl border border-border bg-white p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0">
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="calendar" size={18} />
+            </span>
+            <p className="min-w-0">
+              <span className="block font-bold text-ink">{formatEventDate(event.dateTime)}</span>
+              <span className="mt-0.5 block">{formatEventTime(event.dateTime)}</span>
+            </p>
+          </div>
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="map-pin" size={18} />
+            </span>
+            <p className="min-w-0">
+              <span className="block font-bold text-ink">{event.location}</span>
+              <span className="mt-0.5 block">{event.campus}</span>
+            </p>
+          </div>
+          <div className={infoRowClass}>
+            <span className={infoIconClass}>
+              <Icon name="users" size={18} />
+            </span>
+            {/* hostClub is null when its club was deleted, so the card shows "Unknown club" without a link instead of crashing. */}
+            <p className="min-w-0 font-bold">
+              <span className="block text-ink">Hosted by</span>
+              {event.hostClub?._id ? (
+                <Link to={`/clubs/${event.hostClub._id}`} className="mt-0.5 block">
+                  {event.hostClub.name} →
+                </Link>
+              ) : (
+                <span className="mt-0.5 block text-ink">Unknown club</span>
+              )}
+            </p>
+          </div>
+
+          {saved ? (
+            <>
+              <p className="flex items-center gap-2.5 rounded-[11px] bg-success-50 px-4 py-3.5 text-[14px] leading-5 font-bold text-success">
+                <Icon name="check" size={20} />
+                Saved
+              </p>
+              <Link to="/dashboard" className={buttonClass + ' border border-border bg-white text-primary'}>
+                View saved events
+              </Link>
+              <p className={captionClass}>
+                It’s saved on your dashboard.{' '}
+                <button type="button" className="cursor-pointer font-bold text-primary hover:text-primary-dark" onClick={toggleSave}>
+                  Unsave
+                </button>
+              </p>
+            </>
+          ) : (
+            <>
+              {/* Guests who click Save are sent to the login page by the hook. */}
+              <button
+                type="button"
+                className={buttonClass + ' cursor-pointer bg-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark'}
+                onClick={toggleSave}
+              >
+                Save event
+              </button>
+              {!authLoading && !user && <p className={captionClass}>Sign in to save events.</p>}
+            </>
+          )}
+        </aside>
+      </div>
+    );
   }
 
+  // The gray page fills the full width and cancels the page padding, without changing Layout.jsx.
+  // Its inner box uses the page's max width, so it lines up with the navbar and footer.
   return (
-    <article className="flex flex-col gap-3">
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
-      <p>
-        <strong className="text-ink">When:</strong> {formatEventDateTime(event.dateTime)}
-      </p>
-      <p>
-        <strong className="text-ink">Where:</strong> {event.location}
-      </p>
-      <p>
-        <strong className="text-ink">Campus:</strong> {event.campus}
-      </p>
-      {/* hostClub is null when its club was deleted, so the page shows "Unknown club" without a link instead of crashing. */}
-      <p>
-        <strong className="text-ink">Hosted by:</strong>{' '}
-        {event.hostClub?._id ? (
-          <Link to={`/clubs/${event.hostClub._id}`} className="font-bold">
-            {event.hostClub.name}
-          </Link>
-        ) : (
-          'Unknown club'
-        )}
-      </p>
-
-      {/* A plain save button for now. Guests who click it are sent to the login page. */}
-      <button
-        type="button"
-        className="cursor-pointer self-start rounded-[10px] border border-primary px-4 py-2 font-bold text-primary"
-        onClick={toggleSave}
-        aria-pressed={saved}
-      >
-        {saved ? 'Saved' : 'Save event'}
-      </button>
-      {!authLoading && !user && <p className="text-[14px]">Sign in to save events</p>}
-    </article>
+    <div className="mx-[calc(50%-50vw)] -my-6 bg-page md:-my-10">
+      <div className="mx-auto max-w-275 px-4 pt-6 pb-12 md:px-8 md:pt-9 md:pb-24">
+        <Link to="/" className="mb-5 flex w-fit items-center gap-1.5 text-[16px] leading-5 font-bold text-primary md:mb-6 md:text-[14px]">
+          <Icon name="arrow-left" strokeWidth={3} />
+          Back to all events
+        </Link>
+        {content}
+      </div>
+    </div>
   );
 }
