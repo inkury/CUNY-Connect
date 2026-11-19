@@ -3,7 +3,6 @@
   This file shows a short preview of one event, and it is reused by the Feed, Dashboard, and ClubProfile pages.
   All of its data comes in through the event prop. An event whose club was deleted shows "Unknown club".
   Owner: Person 3
-  TODO: Use the category list from client/src/constants.js (Kenneth) once it exists, instead of the map below.
 */
 import { Link } from 'react-router-dom';
 import Icon from './Icon.jsx';
@@ -11,14 +10,15 @@ import useSaveEvent from '../hooks/useSaveEvent.js';
 import { formatEventDateTime, getCountdownLabel, getMonthShort, getWeekdayShort } from '../utils/dateHelpers.js';
 
 // The start and end colors of the banner gradient for each category.
+// It has one entry for each category in CATEGORIES from client/src/constants.js, in the same order.
 export const categoryGradients = {
-  Tech: ['#203D8D', '#4166BE'],
-  Cultural: ['#B95813', '#F49A10'],
-  Career: ['#1B7870', '#45BBAF'],
-  Social: ['#6539A8', '#A378E4'],
   Academic: ['#3A773C', '#76B658'],
-  Arts: ['#A03060', '#DE7190'],
+  Career: ['#1B7870', '#45BBAF'],
+  Cultural: ['#B95813', '#F49A10'],
+  Social: ['#6539A8', '#A378E4'],
   Sports: ['#DC2626', '#F97316'],
+  Arts: ['#A03060', '#DE7190'],
+  Tech: ['#203D8D', '#4166BE'],
   Volunteering: ['#059669', '#84CC16'],
   Other: ['#546074', '#94A3B8'],
 };
