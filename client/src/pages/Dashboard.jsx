@@ -1,17 +1,22 @@
 /*
   Dashboard page for CUNY-Connect, shown at /dashboard.
   This page is a student's personal home, with the events they saved and upcoming events from the clubs they follow.
-  For now it uses sample data shaped exactly like the GET /api/users/me/dashboard response.
+  It loads everything from GET /users/me/dashboard for the logged-in user.
   Owner: Person 4
-  TODO: Load real data from GET /users/me/dashboard through the API client once login works on the frontend,
-  and take the user from useAuth instead of sampleUser.
-  TODO: Add loading and error states when the real request is added.
+  TODO: Nothing for now. Add an Unfollow button for followedClubs if the design adds one.
 */
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/client.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import StatusBlock from "../components/StatusBlock.jsx";
 import EventCard, { categoryGradients } from "../components/EventCard.jsx";
 import Icon from "../components/Icon.jsx";
 import { getMonthShort, getWeekdayShort } from "../utils/dateHelpers.js";
-import sampleDashboard, { sampleUser } from "../data/sampleDashboard.js";
+
+// The same primary button style the Feed and Event Detail pages use, so buttons look the same everywhere.
+const primaryButtonClass =
+  "flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark hover:text-white";
 
 /**
  * Picks a greeting that matches the time of day.
@@ -108,18 +113,112 @@ function FollowedEventRow({ event }) {
 }
 
 /**
+ * Renders gray placeholder blocks in the shape of the dashboard while it loads.
+ *
+ * @returns {JSX.Element} The loading placeholder.
+ */
+function DashboardSkeleton() {
+  // The pulse is skipped for people who turn off motion, and the hidden text tells screen readers the page is loading.
+  return (
+    <div className="flex flex-col gap-12 motion-safe:animate-pulse" aria-busy="true">
+      <p className="sr-only">Loading your dashboard...</p>
+      <div className="flex flex-col gap-3">
+        <div className="h-4 w-40 rounded-md bg-border" />
+        <div className="h-10 w-80 max-w-full rounded-md bg-border" />
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="h-80 rounded-2xl bg-border" />
+        <div className="h-80 rounded-2xl bg-border" />
+      </div>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="h-21 rounded-[14px] bg-border" />
+        <div className="h-21 rounded-[14px] bg-border" />
+        <div className="h-21 rounded-[14px] bg-border" />
+      </div>
+    </div>
+  );
+}
+
+/**
  * Renders the logged-in user's dashboard.
  *
  * @returns {JSX.Element} The greeting, saved events, and events from followed clubs.
  */
 export default function Dashboard() {
-  const { savedEvents, followedEvents, followedClubs } = sampleDashboard;
+  const { user, loading: authLoading } = useAuth();
+  const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [reloadCount, setReloadCount] = useState(0);
+
+  // Saving or unsaving a card changes user.savedEvents, so watching it keeps the Saved events section in sync.
+  const savedKey = (user?.savedEvents ?? []).join(",");
+  const followedKey = (user?.followedClubs ?? []).join(",");
+
+  useEffect(() => {
+    if (!user) return;
+
+    // If the page closes or a newer load starts before this one finishes, the old answer is ignored.
+    let ignore = false;
+
+    async function loadDashboard() {
+      setError("");
+      try {
+        const response = await api.get("/users/me/dashboard");
+        if (!ignore) setDashboard(response.data);
+      } catch (err) {
+        // The server sends errors as { message }. With no answer at all, the server is probably not running.
+        if (!ignore) setError(err.response?.data?.message || "Could not load your dashboard. Please try again later.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    loadDashboard();
+    return () => {
+      ignore = true;
+    };
+  }, [user, savedKey, followedKey, reloadCount]);
+
+  // Shows the gray placeholders again and loads the dashboard one more time.
+  function retry() {
+    setLoading(true);
+    setReloadCount((count) => count + 1);
+  }
+
+  // The saved session is still being checked, so it is too early to say whether anyone is logged in.
+  if (authLoading) return <DashboardSkeleton />;
+
+  if (!user) {
+    return (
+      <StatusBlock icon="users" title="Log in to see your dashboard" message="Your saved events and clubs you follow show up here.">
+        <Link to="/login" className={primaryButtonClass}>
+          Log in
+        </Link>
+      </StatusBlock>
+    );
+  }
+
+  // Only the first load shows placeholders. Later reloads, like after unsaving a card, keep the old content on screen.
+  if (loading && !dashboard) return <DashboardSkeleton />;
+
+  if (error && !dashboard) {
+    return (
+      <StatusBlock icon="alert-circle" title="Couldn't load your dashboard" message={error}>
+        <button type="button" className={primaryButtonClass} onClick={retry}>
+          Try again
+        </button>
+      </StatusBlock>
+    );
+  }
+
+  const { savedEvents, followedEvents, followedClubs } = dashboard;
   const now = new Date();
   const today = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-  const firstName = sampleUser.name.split(" ")[0];
+  const firstName = user.name.split(" ")[0];
 
   // Officers and admins get a shortcut to the officer pages, since students cannot use them.
-  const canManageEvents = sampleUser.role === "officer" || sampleUser.role === "admin";
+  const canManageEvents = user.role === "officer" || user.role === "admin";
 
   return (
     <div className="flex flex-col gap-12">
