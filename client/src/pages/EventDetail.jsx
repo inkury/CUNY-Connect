@@ -4,12 +4,14 @@
   Owner: Person 3
   It matches the Figma: the main card with the category banner, title, and description, and an info card with the
   date, location, host club, and save button. On desktop the info card sits beside the main card; on phones it goes below.
+  While loading it shows gray skeleton cards. Not found and errors show a centered message with buttons.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import Icon from '../components/Icon.jsx';
+import StatusBlock from '../components/StatusBlock.jsx';
 import { categoryGradients } from '../components/EventCard.jsx';
 import useSaveEvent from '../hooks/useSaveEvent.js';
 import { formatEventDate, formatEventTime } from '../utils/dateHelpers.js';
@@ -32,6 +34,54 @@ const infoRowClass = 'flex items-start gap-3.5 text-[14px] leading-5 text-slate'
 const infoIconClass = 'grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary-50 text-primary';
 const buttonClass = 'flex w-full items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
 const captionClass = 'text-center text-[12px] leading-4 text-slate';
+// The page layout and the two card boxes. The loading skeleton uses them too, so it has the same shape as the event.
+const columnsClass = 'flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10';
+const mainCardClass = 'min-w-0 overflow-hidden rounded-2xl border border-border bg-white lg:flex-1';
+const infoCardClass =
+  'flex flex-col gap-4.5 rounded-2xl border border-border bg-white p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0';
+// The buttons in the not-found and error messages: navy for the main action, outlined for the other one.
+const messageButtonClass = 'flex items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
+const primaryButtonClass =
+  messageButtonClass + ' cursor-pointer border border-transparent bg-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark';
+const outlineButtonClass = messageButtonClass + ' border border-border bg-white text-primary hover:text-primary-dark';
+// The text shown when GET /events/:id answers 404.
+const notFoundMessage = 'Event not found';
+
+/**
+ * Renders gray placeholders shaped like the main card and the info card, shown while the event loads.
+ *
+ * @returns {JSX.Element} The skeleton.
+ */
+function EventDetailSkeleton() {
+  // The pulse is skipped for people who turn off motion. The hidden text tells screen readers the page is loading.
+  return (
+    <div className={columnsClass + ' motion-safe:animate-pulse'} aria-busy="true">
+      <p className="sr-only">Loading event...</p>
+      <div className={mainCardClass}>
+        <div className="h-52.5 bg-border md:h-67.5" />
+        <div className="flex flex-col gap-3 px-5 pt-6 pb-7 md:gap-3.5 md:px-10 md:pt-9 md:pb-10">
+          <div className="h-4 w-32 rounded-md bg-border" />
+          <div className="h-9.5 w-3/4 rounded-md bg-border md:h-13.5" />
+          <div className="mt-2 h-7 w-48 rounded-md bg-border" />
+          <div className="h-4 w-full rounded-md bg-border" />
+          <div className="h-4 w-5/6 rounded-md bg-border" />
+        </div>
+      </div>
+      <div className={infoCardClass}>
+        {[1, 2, 3].map((n) => (
+          <div key={n} className="flex items-center gap-3.5">
+            <div className="h-10 w-10 shrink-0 rounded-[10px] bg-border" />
+            <div className="flex flex-1 flex-col gap-2">
+              <div className="h-3.5 w-2/3 rounded-md bg-border" />
+              <div className="h-3.5 w-1/3 rounded-md bg-border" />
+            </div>
+          </div>
+        ))}
+        <div className="h-12 rounded-[11px] bg-border" />
+      </div>
+    </div>
+  );
+}
 
 /**
  * Renders the details of one event.
@@ -44,12 +94,14 @@ export default function EventDetail() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // Try again adds one to this, which loads the event again.
+  const [attempt, setAttempt] = useState(0);
   // The page already has its own loading flag, so the auth one is renamed to authLoading.
   const { user, loading: authLoading } = useAuth();
   // The hook uses the id from the URL, so it can run before the event finishes loading.
   const { saved, toggleSave } = useSaveEvent(id);
 
-  // Load the event again whenever the id in the URL changes.
+  // Load the event again whenever the id in the URL changes, or Try again is clicked.
   useEffect(() => {
     // If the page closes or the id changes before the request finishes, ignore the old answer.
     let ignore = false;
@@ -67,7 +119,7 @@ export default function EventDetail() {
           setEvent(null);
           // A 404 means there is no event with this id. Anything else uses the server's message if it sent one.
           if (err.response?.status === 404) {
-            setError('Event not found');
+            setError(notFoundMessage);
           } else {
             setError(err.response?.data?.message || 'Could not load this event. Please try again later.');
           }
@@ -83,14 +135,31 @@ export default function EventDetail() {
     return () => {
       ignore = true;
     };
-  }, [id]);
+  }, [id, attempt]);
 
   // Only one of these shows at a time: loading, the error or not-found message, or the event.
   let content;
   if (loading) {
-    content = <p className="text-slate">Loading event...</p>;
+    content = <EventDetailSkeleton />;
+  } else if (error === notFoundMessage) {
+    content = (
+      <StatusBlock icon="search" title="Event not found" message="This event may have been removed, or the link may be wrong.">
+        <Link to="/" className={primaryButtonClass}>
+          Back to all events
+        </Link>
+      </StatusBlock>
+    );
   } else if (error) {
-    content = <p className="text-slate">{error}</p>;
+    content = (
+      <StatusBlock icon="alert-circle" title="Couldn't load this event" message={error}>
+        <button type="button" className={primaryButtonClass} onClick={() => setAttempt((n) => n + 1)}>
+          Try again
+        </button>
+        <Link to="/" className={outlineButtonClass}>
+          Back to all events
+        </Link>
+      </StatusBlock>
+    );
   } else {
     // The banner reuses the EventCard gradient for the category. Unknown categories fall back to Other.
     const [gradientStart, gradientEnd] = categoryGradients[event.category] ?? categoryGradients.Other;
@@ -98,8 +167,8 @@ export default function EventDetail() {
 
     content = (
       // Phones stack the two cards. Desktop puts them side by side, with the main card taking the space left over.
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10">
-        <article className="min-w-0 overflow-hidden rounded-2xl border border-border bg-white lg:flex-1">
+      <div className={columnsClass}>
+        <article className={mainCardClass}>
           {/* The gradient colors change per category, so they are passed in as CSS variables. The angle changes at md. */}
           <div
             className="relative flex h-52.5 items-center justify-center overflow-hidden bg-[linear-gradient(141.81deg,var(--from)_0%,var(--to)_71.43%)] md:h-67.5 md:pt-6 md:pl-6 md:bg-[linear-gradient(153.05deg,var(--from)_0%,var(--to)_71.43%)]"
@@ -134,7 +203,7 @@ export default function EventDetail() {
         </article>
 
         {/* The info card. On desktop it is 350px wide and stays in view while the page scrolls, just below the navbar. */}
-        <aside className="flex flex-col gap-4.5 rounded-2xl border border-border bg-white p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0">
+        <aside className={infoCardClass}>
           <div className={infoRowClass}>
             <span className={infoIconClass}>
               <Icon name="calendar" size={18} />

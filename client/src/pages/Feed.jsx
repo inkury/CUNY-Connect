@@ -3,13 +3,14 @@
   This is the home page, where students browse upcoming events across all CUNY campuses.
   It shows a full-width navy hero banner and a filter card, then loads the events from GET /events and shows them
   as EventCards. Find events reloads the list with the chosen campus, date, and category.
+  While loading it shows gray skeleton cards. Empty results and errors show a centered message with a button.
   Owner: Person 3
-  TODO: Style the loading, error, and empty messages to match the Figma.
 */
 import { useEffect, useState } from 'react';
 import api from '../api/client.js';
 import EventCard from '../components/EventCard.jsx';
 import Icon from '../components/Icon.jsx';
+import StatusBlock from '../components/StatusBlock.jsx';
 import { CAMPUSES, CATEGORIES } from '../constants.js';
 import { formatEventDate } from '../utils/dateHelpers.js';
 
@@ -93,6 +94,43 @@ function FilterSelect({ id, label, value, onChange, allLabel, options }) {
   );
 }
 
+// The navy button style, the same as the Find events button.
+const primaryButtonClass =
+  'flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark';
+
+/**
+ * Renders a gray placeholder shaped like an EventCard, shown while the events load.
+ *
+ * @returns {JSX.Element} The skeleton card.
+ */
+function EventCardSkeleton() {
+  return (
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white">
+      <div className="h-37.5 bg-border" />
+      {/* Each row has the same height as the matching row in EventCard: the pill, the countdown, a two-line title,
+          the date and campus lines, and the footer. That keeps the skeleton 421px tall, the same as a real card. */}
+      <div className="flex flex-col gap-3 px-5 py-4">
+        <div className="h-7 w-24 rounded-full bg-border" />
+        <div className="h-4 w-20 rounded-md bg-border" />
+        <div className="flex flex-col gap-2 py-0.5">
+          <div className="h-4.5 w-full rounded-md bg-border" />
+          <div className="h-4.5 w-2/3 rounded-md bg-border" />
+        </div>
+        <div className="flex h-5 items-center">
+          <div className="h-4 w-1/2 rounded-md bg-border" />
+        </div>
+        <div className="flex h-5 items-center">
+          <div className="h-4 w-1/3 rounded-md bg-border" />
+        </div>
+        <div className="flex items-center justify-between border-t border-border pt-3">
+          <div className="h-4 w-2/5 rounded-md bg-border" />
+          <div className="h-8 w-8 rounded-full bg-border" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Renders the event feed.
  *
@@ -165,6 +203,11 @@ export default function Feed() {
     setSearch({ ...noFilters });
   }
 
+  // Loads the same search again. A copy of the object is a new value, so the effect above runs again.
+  function retry() {
+    setSearch((current) => ({ ...current }));
+  }
+
   const hasFilters = Object.values(search).some((value) => value !== '');
   // The hero chip shows just "Events" until the first unfiltered load finishes, then a count like "27 events".
   let chipLabel = 'Events';
@@ -175,24 +218,45 @@ export default function Feed() {
   // Only one of these shows at a time: loading, then either the error, the empty message, or the cards.
   let content;
   if (loading) {
-    content = <p className="text-slate">Loading events...</p>;
+    // Six gray cards in the same grid as the real ones, with a gray bar where the count goes. The pulse is skipped
+    // for people who turn off motion. The hidden text tells screen readers the page is loading.
+    content = (
+      <div className="motion-safe:animate-pulse" aria-busy="true">
+        <p className="sr-only">Loading events...</p>
+        <div className="mb-6 flex h-6.5 items-center">
+          <div className="h-4 w-44 rounded-md bg-border" />
+        </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <EventCardSkeleton key={n} />
+          ))}
+        </div>
+      </div>
+    );
   } else if (error) {
-    content = <p className="text-slate">{error}</p>;
+    content = (
+      <StatusBlock icon="alert-circle" title="Couldn't load events" message={error}>
+        <button type="button" className={primaryButtonClass} onClick={retry}>
+          Try again
+        </button>
+      </StatusBlock>
+    );
   } else if (events.length === 0 && hasFilters) {
     content = (
-      <>
-        <p className="text-slate">No events match these filters.</p>
-        <button
-          type="button"
-          className="mt-4 cursor-pointer rounded-[11px] border border-border bg-white px-5.5 py-3 text-[16px] leading-6 font-bold text-primary transition-colors hover:text-primary-dark"
-          onClick={clearFilters}
-        >
+      <StatusBlock icon="search" title="No events match these filters" message="Try a different campus, date, or category.">
+        <button type="button" className={primaryButtonClass} onClick={clearFilters}>
           Clear filters
         </button>
-      </>
+      </StatusBlock>
     );
   } else if (events.length === 0) {
-    content = <p className="text-slate">No upcoming events yet.</p>;
+    content = (
+      <StatusBlock
+        icon="calendar"
+        title="No upcoming events yet"
+        message="Check back soon. New events from across CUNY will show up here."
+      />
+    );
   } else {
     // The grid starts at one column on phones and adds columns on bigger screens.
     content = (

@@ -1,6 +1,6 @@
 /*
   Small line icons for the CUNY-Connect client.
-  This file draws the icons used on event cards, the Feed hero and filters, and the event page as inline SVGs,
+  This file draws the icons used on event cards, the Feed hero, filters, and messages, and the event page as inline SVGs,
   so the app does not need an icon library. Each event category has its own icon for the event page banner.
   Owner: Person 3
   TODO: Add more icons here as new pages need them.
@@ -32,6 +32,12 @@ const iconShapes = {
   ),
   'arrow-left': <path d="M19 12H5M12 19l-7-7 7-7" />,
   check: <path d="M20 6 9 17l-5-5" />,
+  'alert-circle': (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4M12 16h.01" />
+    </>
+  ),
   search: (
     <>
       <circle cx="11" cy="11" r="8" />
