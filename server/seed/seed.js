@@ -26,7 +26,13 @@ const DEMO_USERS = [
   { name: "Demo Admin", email: "admin@cunyconnect.dev", campus: "Hunter", role: "admin" },
 ];
 // The demo officer runs this club, so the officer pages have real events to manage.
-const OFFICER_CLUB = { campus: "Hunter", name: "Computer Science Club" };
+const OFFICER_CLUB = { campus: "Hunter", name: "Mexican Student Union" };
+// The demo student follows clubs that have events, so "From clubs you follow" on the dashboard is not empty.
+const FOLLOWED_CLUBS = [
+  { campus: "Hunter", name: "Mexican Student Union" },
+  { campus: "Baruch", name: "Pre-Law Society" },
+  { campus: "City College", name: "City College" },
+];
 
 /**
  * Reads the clubs and events from every campus folder in seed/data.
@@ -144,7 +150,7 @@ async function seed() {
 
   // The demo student starts with a couple of saves and a follow, so the dashboard is not empty in demos.
   student.savedEvents = savedEvents.slice(0, 2).map((event) => event._id);
-  student.followedClubs = [officerClubId];
+  student.followedClubs = FOLLOWED_CLUBS.map((club) => clubIds.get(clubKey(club.campus, club.name)));
   await student.save();
 
   console.log(`Seeded ${savedClubs.length} clubs, ${savedEvents.length} events, and ${DEMO_USERS.length} demo users.`);
