@@ -25,12 +25,12 @@ function response() {
   };
 }
 
-test('list applies upcoming, campus, category, UTC day, and ascending sort', async () => {
+test('list applies upcoming, campus, category, NY calendar day, and ascending sort', async () => {
   Event.collection.find = (filter, options) => {
     assert.equal(filter.campus, 'Hunter');
     assert.equal(filter.category, 'Tech');
-    assert.equal(filter.dateTime.$gte.toISOString(), '2099-11-05T00:00:00.000Z');
-    assert.equal(filter.dateTime.$lt.toISOString(), '2099-11-06T00:00:00.000Z');
+    assert.equal(filter.dateTime.$gte.toISOString(), '2099-11-05T05:00:00.000Z');
+    assert.equal(filter.dateTime.$lt.toISOString(), '2099-11-06T05:00:00.000Z');
     assert.deepEqual(options.sort, { dateTime: 1 });
     return { toArray: async () => [] };
   };
@@ -50,10 +50,19 @@ test('unfiltered list starts at now; past dates retain the upcoming restriction'
   await list({ query: {} }, response());
   Event.collection.find = filter => {
     assert.ok(filter.dateTime.$gte.getTime() >= before);
-    assert.equal(filter.dateTime.$lt.toISOString(), '2000-01-02T00:00:00.000Z');
+    assert.equal(filter.dateTime.$lt.toISOString(), '2000-01-02T05:00:00.000Z');
     return { toArray: async () => [] };
   };
   await list({ query: { date: '2000-01-01' } }, response());
+});
+
+test('NY day boundary uses DST offset', async () => {
+  Event.collection.find = filter => {
+    assert.equal(filter.dateTime.$gte.toISOString(), '2099-07-05T04:00:00.000Z');
+    assert.equal(filter.dateTime.$lt.toISOString(), '2099-07-06T04:00:00.000Z');
+    return { toArray: async () => [] };
+  };
+  await list({ query: { date: '2099-07-05' } }, response());
 });
 
 test('rejects invalid dates and repeated filter parameters', async () => {
