@@ -65,7 +65,7 @@ function getDateOptions() {
 function FilterSelect({ id, label, value, onChange, allLabel, options }) {
   return (
     <div className="flex h-20 min-w-0 flex-col gap-2 md:flex-1">
-      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600">
+      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600 dark:text-dark-slate-600">
         {label}
       </label>
       {/* The Figma select is 80px tall with 4px of space under the field. appearance-none hides the browser's own arrow, so the Figma chevron can sit on top instead. */}
@@ -74,7 +74,7 @@ function FilterSelect({ id, label, value, onChange, allLabel, options }) {
           id={id}
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className="h-12 w-full cursor-pointer appearance-none rounded-[10px] border border-border bg-white pr-10 pl-3.5 text-[16px] leading-6.5 text-ink"
+          className="h-12 w-full cursor-pointer appearance-none rounded-[10px] border border-border dark:border-dark-border bg-white dark:bg-dark-surface pr-10 pl-3.5 text-[16px] leading-6.5 text-ink dark:text-dark-ink"
         >
           <option value="">{allLabel}</option>
           {options.map((option) => (
@@ -87,7 +87,7 @@ function FilterSelect({ id, label, value, onChange, allLabel, options }) {
           name="chevron-right"
           size={18}
           strokeWidth={2.67}
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 rotate-90 text-slate"
+          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 rotate-90 text-slate dark:text-dark-slate"
         />
       </div>
     </div>
@@ -96,7 +96,7 @@ function FilterSelect({ id, label, value, onChange, allLabel, options }) {
 
 // The navy button style, the same as the Find events button.
 const primaryButtonClass =
-  'flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark';
+  'flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary dark:bg-dark-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark dark:hover:bg-dark-primary/90';
 
 /**
  * Renders a gray placeholder shaped like an EventCard, shown while the events load.
@@ -105,26 +105,26 @@ const primaryButtonClass =
  */
 function EventCardSkeleton() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white">
-      <div className="h-37.5 bg-border" />
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface">
+      <div className="h-37.5 bg-border dark:bg-dark-border" />
       {/* Each row has the same height as the matching row in EventCard: the pill, the countdown, a two-line title,
           the date and campus lines, and the footer. That keeps the skeleton 421px tall, the same as a real card. */}
       <div className="flex flex-col gap-3 px-5 py-4">
-        <div className="h-7 w-24 rounded-full bg-border" />
-        <div className="h-4 w-20 rounded-md bg-border" />
+        <div className="h-7 w-24 rounded-full bg-border dark:bg-dark-border" />
+        <div className="h-4 w-20 rounded-md bg-border dark:bg-dark-border" />
         <div className="flex flex-col gap-2 py-0.5">
-          <div className="h-4.5 w-full rounded-md bg-border" />
-          <div className="h-4.5 w-2/3 rounded-md bg-border" />
+          <div className="h-4.5 w-full rounded-md bg-border dark:bg-dark-border" />
+          <div className="h-4.5 w-2/3 rounded-md bg-border dark:bg-dark-border" />
         </div>
         <div className="flex h-5 items-center">
-          <div className="h-4 w-1/2 rounded-md bg-border" />
+          <div className="h-4 w-1/2 rounded-md bg-border dark:bg-dark-border" />
         </div>
         <div className="flex h-5 items-center">
-          <div className="h-4 w-1/3 rounded-md bg-border" />
+          <div className="h-4 w-1/3 rounded-md bg-border dark:bg-dark-border" />
         </div>
-        <div className="flex items-center justify-between border-t border-border pt-3">
-          <div className="h-4 w-2/5 rounded-md bg-border" />
-          <div className="h-8 w-8 rounded-full bg-border" />
+        <div className="flex items-center justify-between border-t border-border dark:border-dark-border pt-3">
+          <div className="h-4 w-2/5 rounded-md bg-border dark:bg-dark-border" />
+          <div className="h-8 w-8 rounded-full bg-border dark:bg-dark-border" />
         </div>
       </div>
     </div>
@@ -224,7 +224,7 @@ export default function Feed() {
       <div className="motion-safe:animate-pulse" aria-busy="true">
         <p className="sr-only">Loading events...</p>
         <div className="mb-6 flex h-6.5 items-center">
-          <div className="h-4 w-44 rounded-md bg-border" />
+          <div className="h-4 w-44 rounded-md bg-border dark:bg-dark-border" />
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((n) => (
@@ -261,7 +261,7 @@ export default function Feed() {
     // The grid starts at one column on phones and adds columns on bigger screens.
     content = (
       <>
-        <p className="mb-6 text-slate">
+        <p className="mb-6 text-slate dark:text-dark-slate">
           {events.length} {events.length === 1 ? 'event' : 'events'} selected for you
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -277,7 +277,7 @@ export default function Feed() {
     <>
       {/* The hero breaks out of the page's centered column to fill the full width, and the negative top margin cancels
           the page's top padding so it sits right under the navbar. Colors and sizes come from the Figma hero. */}
-      <section className="relative mx-[calc(50%-50vw)] -mt-6 overflow-hidden bg-[linear-gradient(129.57deg,var(--color-primary-dark)_0%,#2a4fb0_71.43%)] md:-mt-10 md:bg-[linear-gradient(158.11deg,var(--color-primary-dark)_0%,#2a4fb0_71.43%)]">
+      <section className="relative mx-[calc(50%-50vw)] -mt-6 overflow-hidden bg-[linear-gradient(129.57deg,var(--color-primary-dark)_0%,var(--color-hero-end)_71.43%)] md:-mt-10 md:bg-[linear-gradient(158.11deg,var(--color-primary-dark)_0%,var(--color-hero-end)_71.43%)]">
         {/* The inner box uses the page's max width, so the hero text lines up with the events below it. */}
         <div className="relative mx-auto flex max-w-275 flex-col items-start gap-4 px-6 pt-12 pb-30 md:gap-4.5 md:px-8 md:pt-18">
           {/* Soft decorative rings. The phone has one filled circle, and desktop has an outlined ring and a large filled circle. */}
@@ -285,7 +285,7 @@ export default function Feed() {
           <span className="absolute -top-65 left-172.5 hidden h-155 w-155 rounded-full border-2 border-white/25 md:block" aria-hidden="true" />
           <span className="absolute top-60 left-132.5 hidden h-250 w-250 rounded-full bg-white/5 md:block" aria-hidden="true" />
 
-          <p className="relative font-body text-[12px] leading-4.5 font-extrabold tracking-[1.68px] text-[#c9d4f2] uppercase">
+          <p className="relative font-body text-[12px] leading-4.5 font-extrabold tracking-[1.68px] text-on-brand-muted uppercase">
             Your CUNY community starts here
           </p>
           {/* The line breaks differ: phones break after "next", desktop breaks after "campus". */}
@@ -296,25 +296,25 @@ export default function Feed() {
               <br className="hidden md:inline" /> moment.
             </span>
           </h1>
-          <p className="relative max-w-150 text-[16px] leading-6.5 text-[#c9d4f2] md:text-[18px] md:leading-7">
+          <p className="relative max-w-150 text-[16px] leading-6.5 text-on-brand-muted md:text-[18px] md:leading-7">
             Discover events, meet people, and find your community across all 25 CUNY colleges.
           </p>
 
           {/* Phone: one tilted chip under the text, like the Figma phone frame. It is placed from the bottom, inside the
               hero's bottom padding, so it never covers the text when the text wraps to more lines on narrow phones. */}
-          <div className="absolute right-8.5 bottom-16.25 flex rotate-3 items-center gap-2 rounded-xl bg-white py-2.5 pr-4 pl-3.5 md:hidden">
-            <Icon name="calendar" size={18} className="text-primary" />
-            <span className="text-[14px] leading-5 font-bold text-primary">{chipLabel}</span>
+          <div className="absolute right-8.5 bottom-16.25 flex rotate-3 items-center gap-2 rounded-xl bg-white dark:bg-dark-surface py-2.5 pr-4 pl-3.5 md:hidden">
+            <Icon name="calendar" size={18} className="text-primary dark:text-dark-link" />
+            <span className="text-[14px] leading-5 font-bold text-primary dark:text-dark-link">{chipLabel}</span>
           </div>
 
           {/* Desktop: two tilted chips on the right. They need the full width, so they show from xl (1280px) up. */}
-          <div className="absolute top-36.75 left-217.25 hidden rotate-4 items-center gap-2.5 rounded-[14px] bg-white py-3 pr-4.5 pl-4 shadow-[0_4px_14px_rgba(23,32,51,0.06)] xl:flex">
-            <Icon name="calendar" size={20} className="text-primary" />
-            <span className="text-[16px] leading-5 font-bold text-primary">{chipLabel}</span>
+          <div className="absolute top-36.75 left-217.25 hidden rotate-4 items-center gap-2.5 rounded-[14px] bg-white dark:bg-dark-surface py-3 pr-4.5 pl-4 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 xl:flex">
+            <Icon name="calendar" size={20} className="text-primary dark:text-dark-link" />
+            <span className="text-[16px] leading-5 font-bold text-primary dark:text-dark-link">{chipLabel}</span>
           </div>
-          <div className="absolute top-63.75 left-188 hidden -rotate-3 items-center gap-2.5 rounded-[14px] bg-white py-3 pr-4.5 pl-4 shadow-[0_4px_14px_rgba(23,32,51,0.06)] xl:flex">
-            <Icon name="users" size={20} className="text-primary" />
-            <span className="text-[16px] leading-5 font-bold text-primary">25 colleges</span>
+          <div className="absolute top-63.75 left-188 hidden -rotate-3 items-center gap-2.5 rounded-[14px] bg-white dark:bg-dark-surface py-3 pr-4.5 pl-4 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 xl:flex">
+            <Icon name="users" size={20} className="text-primary dark:text-dark-link" />
+            <span className="text-[16px] leading-5 font-bold text-primary dark:text-dark-link">25 colleges</span>
           </div>
         </div>
       </section>
@@ -323,7 +323,7 @@ export default function Feed() {
           Phones stack the controls. Desktop puts them in one row with the button at the bottom. */}
       <form
         onSubmit={handleFind}
-        className="relative -mt-14 mb-10 flex flex-col gap-3.5 rounded-2xl border border-border bg-white p-4.5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:-mt-16 md:mb-14 md:flex-row md:items-end md:gap-4 md:p-5"
+        className="relative -mt-14 mb-10 flex flex-col gap-3.5 rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface p-4.5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:-mt-16 md:mb-14 md:flex-row md:items-end md:gap-4 md:p-5"
       >
         <FilterSelect
           id="filter-campus"
@@ -351,14 +351,14 @@ export default function Feed() {
         />
         <button
           type="submit"
-          className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark"
+          className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary dark:bg-dark-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark dark:hover:bg-dark-primary/90"
         >
           <Icon name="search" size={18} strokeWidth={2.67} />
           Find events
         </button>
       </form>
 
-      <p className="mb-2 font-body text-[12px] leading-4 font-extrabold tracking-widest text-primary uppercase">
+      <p className="mb-2 font-body text-[12px] leading-4 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase">
         Happening around CUNY
       </p>
       <h1 className="mb-2">Events worth showing up for</h1>

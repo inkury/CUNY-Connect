@@ -7,11 +7,35 @@
   avatar's place.
   On phones the links fold into a menu button that opens a dropdown panel. Logged-out visitors also get a bold
   "Sign in" text link next to the menu button, and inside the menu Sign in is a normal row like the other links.
+  It also has the sun/moon dark mode toggle. Dark mode only works on pages that have dark styles (see darkPages),
+  so on every other page the toggle is hidden and everything stays light. index.html sets the same class before
+  React starts, so a reload in dark mode does not flash light first.
   Owner: Person 3
 */
-import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useLayoutEffect, useState } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import Icon from './Icon.jsx';
+
+// The pages that have dark styles: the Feed (/) and the event page (/events/:id). index.html uses the same check.
+const darkPages = /^\/$|^\/events\/[^/]+\/?$/;
+// The localStorage key that remembers the choice, "dark" or "light". index.html reads the same key.
+const themeKey = 'theme';
+
+/**
+ * Picks the starting theme. The site is light unless the user turned on dark mode with the toggle before.
+ * The computer's own dark or light setting is not used.
+ *
+ * @returns {string} "dark" or "light".
+ */
+function getStartingTheme() {
+  // localStorage can throw, for example in some private windows, so the read is wrapped.
+  try {
+    return localStorage.getItem(themeKey) === 'dark' ? 'dark' : 'light';
+  } catch {
+    return 'light';
+  }
+}
 
 // The links shown on desktop and in the phone menu. "end" makes Events active only on /, not on every page.
 // "loggedInOnly" links are hidden from guests, following the Figma guest design.
@@ -30,9 +54,12 @@ function desktopLinkClass({ isActive }) {
   // Every link has a 2px bottom border, transparent when inactive, so the text does not jump when it becomes active.
   const base = 'flex h-18 items-center gap-2 border-b-2 px-1 text-[15px] transition-colors';
   if (isActive) {
-    return base + ' border-accent font-bold text-primary';
+    return base + ' border-accent font-bold text-primary dark:text-dark-link';
   }
-  return base + ' border-transparent font-medium text-slate-600 hover:border-border hover:text-primary';
+  return (
+    base +
+    ' border-transparent font-medium text-slate-600 hover:border-border hover:text-primary dark:text-dark-slate-600 dark:hover:border-dark-border dark:hover:text-dark-link'
+  );
 }
 
 /**
@@ -42,13 +69,13 @@ function desktopLinkClass({ isActive }) {
  * @returns {string} The Tailwind classes.
  */
 function mobileLinkClass() {
-  return 'flex items-center gap-3 border-b border-border py-3.5 text-[16px] leading-5 font-bold text-primary transition-colors hover:text-primary-dark';
+  return 'flex items-center gap-3 border-b border-border py-3.5 text-[16px] leading-5 font-bold text-primary transition-colors hover:text-primary-dark dark:border-dark-border dark:text-dark-link dark:hover:text-dark-ink';
 }
 
 // The guest Sign in button from the Figma: solid navy, 42px tall, with a soft navy shadow.
 // It is a plain Link, not a NavLink, so it never gets the amber underline the other links use.
 const signInClass =
-  'flex h-10.5 items-center justify-center rounded-[10px] bg-primary px-5 text-[15px] font-bold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark';
+  'flex h-10.5 items-center justify-center rounded-[10px] bg-primary px-5 text-[15px] font-bold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark dark:bg-dark-primary dark:hover:bg-dark-primary/90';
 
 /**
  * Builds the initials for the avatar from a full name.
@@ -76,7 +103,7 @@ function getInitials(name) {
  */
 function Avatar({ initials }) {
   return (
-    <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-50 text-xs font-semibold text-primary">
+    <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-50 text-xs font-semibold text-primary dark:bg-dark-primary-50 dark:text-dark-link">
       {initials ? (
         initials
       ) : (
@@ -98,6 +125,41 @@ export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const [theme, setTheme] = useState(getStartingTheme);
+  const darkAllowed = darkPages.test(pathname);
+
+  // The "dark" class on <html> turns on every dark: style. It is only added on pages that support dark mode.
+  // useLayoutEffect runs before the browser paints, so a page never shows one frame in the wrong theme.
+  // The cleanup removes the class when the Navbar goes away, for example on /login, which has no Navbar.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', darkAllowed && theme === 'dark');
+    return () => root.classList.remove('dark');
+  }, [darkAllowed, theme]);
+
+  // Switches the theme and remembers it for the next visit.
+  function toggleTheme() {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    try {
+      localStorage.setItem(themeKey, next);
+    } catch {
+      // The choice still works for this visit, it just will not be remembered.
+    }
+  }
+
+  // The sun/moon button. It is hidden on pages without dark styles. The moon shows in light mode and the sun in dark mode.
+  const themeToggle = darkAllowed && (
+    <button
+      type="button"
+      className="grid h-11 w-11 cursor-pointer place-items-center rounded-full text-slate-600 transition-colors hover:bg-primary-50 hover:text-primary dark:text-dark-slate-600 dark:hover:bg-dark-primary-50 dark:hover:text-dark-link"
+      onClick={toggleTheme}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={20} />
+    </button>
+  );
 
   function toggleMenu() {
     setMenuOpen(!menuOpen);
@@ -132,7 +194,7 @@ export default function Navbar() {
     if (loading) {
       return (
         <span className={placeholderClass} aria-hidden="true">
-          <span className="block h-8 w-8 rounded-full bg-border" />
+          <span className="block h-8 w-8 rounded-full bg-border dark:bg-dark-border" />
         </span>
       );
     }
@@ -182,11 +244,11 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white">
+    <header className="sticky top-0 z-50 border-b border-border bg-white dark:border-dark-border dark:bg-dark-surface">
       {/* The inner row lines up with the Layout's content: same max width and side padding. */}
       <div className="mx-auto flex h-16 max-w-275 items-center justify-between px-4 md:h-18 md:px-8">
-        <Link to="/" className="flex h-11 items-center gap-2 text-primary" onClick={closeMenu}>
-          <span className="grid h-8.5 w-8.5 place-items-center rounded-[9px] bg-primary font-heading font-bold text-white">
+        <Link to="/" className="flex h-11 items-center gap-2 text-primary dark:text-dark-link" onClick={closeMenu}>
+          <span className="grid h-8.5 w-8.5 place-items-center rounded-[9px] bg-primary font-heading font-bold text-white dark:bg-dark-primary">
             C
           </span>
           <span className="font-heading text-lg font-bold">CUNY Connect</span>
@@ -199,6 +261,7 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {themeToggle}
           {renderAccountLinks(desktopLinkClass, '', 'flex h-18 items-center px-1', true)}
         </nav>
 
@@ -207,15 +270,17 @@ export default function Navbar() {
           {/* Guests get a quick Sign in link next to the menu button. It waits for loading so it never flashes for a logged-in user,
               and hides while the menu is open, because the menu already has its own Sign in row. */}
           {!loading && !user && !menuOpen && (
-            <Link to="/login" className="flex h-11 items-center text-[15px] font-bold text-primary" onClick={closeMenu}>
+            <Link to="/login" className="flex h-11 items-center text-[15px] font-bold text-primary dark:text-dark-link" onClick={closeMenu}>
               Sign in
             </Link>
           )}
 
+          {themeToggle}
+
           {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
           <button
             type="button"
-            className="-mr-2.5 rounded-md p-2.5 text-primary transition-colors hover:text-primary-dark md:hidden"
+            className="-mr-2.5 rounded-md p-2.5 text-primary transition-colors hover:text-primary-dark md:hidden dark:text-dark-link dark:hover:text-dark-ink"
             onClick={toggleMenu}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
@@ -230,7 +295,11 @@ export default function Navbar() {
 
       {/* The phone menu panel sits under the bar, with the same links stacked. It only renders while open. */}
       {menuOpen && (
-        <nav id="mobile-menu" className="flex flex-col border-t border-border bg-white px-5 pb-3 md:hidden" aria-label="Main">
+        <nav
+          id="mobile-menu"
+          className="flex flex-col border-t border-border bg-white px-5 pb-3 md:hidden dark:border-dark-border dark:bg-dark-surface"
+          aria-label="Main"
+        >
           {visibleLinks.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={mobileLinkClass} onClick={closeMenu}>
               {link.label}

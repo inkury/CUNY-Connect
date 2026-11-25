@@ -24,9 +24,10 @@ export default function Layout() {
       </main>
 
       {/* The strip is full width, and its inner row uses the same max width and padding as main so the text lines up with the page. */}
-      <footer className="border-t border-border bg-page">
+      {/* In dark mode (only on pages that support it) the strip uses the dark page color, like the Figma dark frames. */}
+      <footer className="border-t border-border bg-page dark:border-dark-border dark:bg-dark-page">
         {/* The text is centered on phones and sits on the left from md (768px) up. */}
-        <div className="mx-auto max-w-275 px-4 py-7 text-center text-[13px] leading-4 text-slate md:px-8 md:text-left">
+        <div className="mx-auto max-w-275 px-4 py-7 text-center text-[13px] leading-4 text-slate md:px-8 md:text-left dark:text-dark-slate">
           <p>© 2026 CUNY Connect</p>
         </div>
       </footer>
