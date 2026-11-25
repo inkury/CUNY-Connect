@@ -76,10 +76,14 @@ function requireRole(...roles) {
  * @returns {Promise<boolean>} True if the user is an officer of that club.
  */
 async function isClubOfficer(user, clubId) {
-  if (!user || !mongoose.isValidObjectId(clubId)) return false;
+  if (!user || !mongoose.isValidObjectId(clubId)) {
+    return false;
+  }
   const club = await Club.findById(clubId).select('officers');
-  if (!club) return false;
-  return club.officers.some((officerId) => officerId.equals(user._id));
+  if (!club) {
+    return false;
+  }
+  return club.officers.some(officerId => officerId.equals(user._id));
 }
 
 module.exports = { protect, requireRole, isClubOfficer };
