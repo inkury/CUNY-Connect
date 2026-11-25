@@ -185,7 +185,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-border bg-white">
       {/* The inner row lines up with the Layout's content: same max width and side padding. */}
       <div className="mx-auto flex h-16 max-w-275 items-center justify-between px-4 md:h-18 md:px-8">
-        <Link to="/" className="flex items-center gap-2 text-primary" onClick={closeMenu}>
+        <Link to="/" className="flex h-11 items-center gap-2 text-primary" onClick={closeMenu}>
           <span className="grid h-8.5 w-8.5 place-items-center rounded-[9px] bg-primary font-heading font-bold text-white">
             C
           </span>
@@ -207,7 +207,7 @@ export default function Navbar() {
           {/* Guests get a quick Sign in link next to the menu button. It waits for loading so it never flashes for a logged-in user,
               and hides while the menu is open, because the menu already has its own Sign in row. */}
           {!loading && !user && !menuOpen && (
-            <Link to="/login" className="text-[15px] font-bold text-primary" onClick={closeMenu}>
+            <Link to="/login" className="flex h-11 items-center text-[15px] font-bold text-primary" onClick={closeMenu}>
               Sign in
             </Link>
           )}
@@ -215,7 +215,7 @@ export default function Navbar() {
           {/* The menu button only shows on phones. aria-expanded tells screen readers whether the menu is open. */}
           <button
             type="button"
-            className="-mr-2 rounded-md p-2 text-primary transition-colors hover:text-primary-dark md:hidden"
+            className="-mr-2.5 rounded-md p-2.5 text-primary transition-colors hover:text-primary-dark md:hidden"
             onClick={toggleMenu}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
