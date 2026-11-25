@@ -62,8 +62,8 @@ function SectionHeader({ title, subtitle, linkTo, linkLabel }) {
  */
 function SavedEmptyState() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-page px-6 py-12 text-center">
-      <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-50 text-primary">
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border dark:border-dark-border bg-page dark:bg-dark-page px-6 py-12 text-center">
+      <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-50 dark:bg-dark-primary-50 text-primary dark:text-dark-link">
         <Icon name="calendar" size={26} />
       </span>
       <h3>No saved events yet</h3>
@@ -84,8 +84,8 @@ function SavedEmptyState() {
  */
 function FollowedEmptyState({ message }) {
   return (
-    <div className="flex items-center gap-3.5 rounded-[14px] border border-border bg-page px-6 py-5">
-      <Icon name="users" size={22} className="text-primary" />
+    <div className="flex items-center gap-3.5 rounded-[14px] border border-border dark:border-dark-border bg-page dark:bg-dark-page px-6 py-5">
+      <Icon name="users" size={22} className="text-primary dark:text-dark-link" />
       <p className="flex-1">{message}</p>
     </div>
   );
@@ -106,7 +106,7 @@ function FollowedEventRow({ event }) {
   return (
     <Link
       to={`/events/${event._id}`}
-      className="flex items-center gap-3.5 rounded-[14px] border border-border bg-white py-3.5 pr-4 pl-3.5 text-ink transition hover:-translate-y-0.5 hover:text-ink hover:shadow-[0_4px_14px_rgba(23,32,51,0.06)]"
+      className="flex items-center gap-3.5 rounded-[14px] border border-border dark:border-dark-border bg-white dark:bg-dark-surface py-3.5 pr-4 pl-3.5 text-ink dark:text-dark-ink transition hover:-translate-y-0.5 hover:text-ink dark:hover:text-dark-ink hover:shadow-[0_4px_14px_rgba(23,32,51,0.06)]"
     >
       <div
         className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-[10px] text-white"
@@ -117,7 +117,7 @@ function FollowedEventRow({ event }) {
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[14px] leading-5 font-bold">{event.title}</p>
-        <p className="truncate text-[12px] leading-4 text-slate">
+        <p className="truncate text-[12px] leading-4 text-slate dark:text-dark-slate">
           {event.campus} · {time}
         </p>
       </div>
@@ -137,17 +137,17 @@ function DashboardSkeleton() {
     <div className="flex flex-col gap-12 motion-safe:animate-pulse" aria-busy="true">
       <p className="sr-only">Loading your dashboard...</p>
       <div className="flex flex-col gap-3">
-        <div className="h-4 w-40 rounded-md bg-border" />
-        <div className="h-10 w-80 max-w-full rounded-md bg-border" />
+        <div className="h-4 w-40 rounded-md bg-border dark:bg-dark-border" />
+        <div className="h-10 w-80 max-w-full rounded-md bg-border dark:bg-dark-border" />
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="h-80 rounded-2xl bg-border" />
-        <div className="h-80 rounded-2xl bg-border" />
+        <div className="h-80 rounded-2xl bg-border dark:bg-dark-border" />
+        <div className="h-80 rounded-2xl bg-border dark:bg-dark-border" />
       </div>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-        <div className="h-21 rounded-[14px] bg-border" />
-        <div className="h-21 rounded-[14px] bg-border" />
-        <div className="h-21 rounded-[14px] bg-border" />
+        <div className="h-21 rounded-[14px] bg-border dark:bg-dark-border" />
+        <div className="h-21 rounded-[14px] bg-border dark:bg-dark-border" />
+        <div className="h-21 rounded-[14px] bg-border dark:bg-dark-border" />
       </div>
     </div>
   );
@@ -241,7 +241,7 @@ export default function Dashboard() {
     <div className="flex flex-col gap-12">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary uppercase">{today}</p>
+          <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase">{today}</p>
           <h1>{isNewUser ? `Welcome, ${firstName}!` : `${getGreeting(now)}, ${firstName}`}</h1>
           <p className="mt-2">
             {isNewUser ? "Your account is ready. Here’s how to get started." : "Here’s what’s happening in your CUNY world."}

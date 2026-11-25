@@ -34,16 +34,16 @@ function Toast({ title, message, onClose }) {
   return (
     <div
       role="status"
-      className="fixed top-20 right-4 z-50 flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border border-border bg-white p-4 shadow-[0_10px_30px_rgba(23,32,51,0.12)]"
+      className="fixed top-20 right-4 z-50 flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface p-4 shadow-[0_10px_30px_rgba(23,32,51,0.12)]"
     >
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-success-50 text-success">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-success-50 dark:bg-dark-success-50 text-success dark:text-dark-success">
         <Icon name="check" size={18} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[14px] leading-5 font-bold text-ink">{title}</p>
+        <p className="text-[14px] leading-5 font-bold text-ink dark:text-dark-ink">{title}</p>
         <p className="text-[14px] leading-5">{message}</p>
       </div>
-      <button type="button" onClick={onClose} className="cursor-pointer text-slate hover:text-ink" aria-label="Close message">
+      <button type="button" onClick={onClose} className="cursor-pointer text-slate dark:text-dark-slate hover:text-ink dark:hover:text-dark-ink" aria-label="Close message">
         <Icon name="x" size={18} />
       </button>
     </div>
@@ -72,16 +72,16 @@ function DeleteEventModal({ event, deleting, error, onCancel, onConfirm }) {
   }, [onCancel]);
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 px-4" onClick={onCancel}>
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 dark:bg-black/60 px-4" onClick={onCancel}>
       {/* Clicks inside the card stop here, so only a click on the dark background closes the popup. */}
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-title"
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-[0_20px_50px_rgba(23,32,51,0.25)]"
+        className="w-full max-w-sm rounded-2xl bg-white dark:bg-dark-surface dark:border dark:border-dark-border p-6 shadow-[0_20px_50px_rgba(23,32,51,0.25)]"
         onClick={(clickEvent) => clickEvent.stopPropagation()}
       >
-        <span className="grid h-10 w-10 place-items-center rounded-full bg-red-50 text-red-700">
+        <span className="grid h-10 w-10 place-items-center rounded-full bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-400">
           <Icon name="trash" size={20} />
         </span>
         <h2 id="delete-title" className="mt-4 text-[22px] leading-7">
@@ -91,7 +91,7 @@ function DeleteEventModal({ event, deleting, error, onCancel, onConfirm }) {
           Students who saved it will no longer see it. This can’t be undone.
         </p>
         {error && (
-          <p role="alert" className="mt-3 rounded-[10px] bg-red-50 px-3 py-2 text-[14px] leading-5 text-red-700">
+          <p role="alert" className="mt-3 rounded-[10px] bg-red-50 dark:bg-red-950/50 px-3 py-2 text-[14px] leading-5 text-red-700 dark:text-red-400">
             {error}
           </p>
         )}
@@ -121,7 +121,7 @@ function OfficerEventRow({ event, onDelete }) {
   const [gradientStart, gradientEnd] = categoryGradients[event.category] ?? categoryGradients.Other;
 
   return (
-    <li className="flex items-center gap-4 border-t border-border px-6 py-4.5">
+    <li className="flex items-center gap-4 border-t border-border dark:border-dark-border px-6 py-4.5">
       <div
         className="flex h-13 w-13 shrink-0 flex-col items-center justify-center rounded-[10px] text-white"
         style={{ background: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})` }}
@@ -130,18 +130,18 @@ function OfficerEventRow({ event, onDelete }) {
         <span className="text-[10px] leading-4 uppercase">{getWeekdayShort(event.dateTime)}</span>
       </div>
       <div className="min-w-0 flex-1">
-        <Link to={`/events/${event._id}`} className="block truncate text-[16px] leading-5 font-bold text-ink hover:text-primary">
+        <Link to={`/events/${event._id}`} className="block truncate text-[16px] leading-5 font-bold text-ink dark:text-dark-ink hover:text-primary dark:hover:text-dark-link">
           {event.title}
         </Link>
         <p className="mt-1 truncate text-[12px] leading-4">{formatEventDateTime(event.dateTime)}</p>
       </div>
-      <Link to={`/officer/events/${event._id}/edit`} className="text-slate hover:text-primary" aria-label={`Edit ${event.title}`}>
+      <Link to={`/officer/events/${event._id}/edit`} className="text-slate dark:text-dark-slate hover:text-primary dark:hover:text-dark-link" aria-label={`Edit ${event.title}`}>
         <Icon name="edit" size={18} />
       </Link>
       <button
         type="button"
         onClick={() => onDelete(event)}
-        className="cursor-pointer text-slate hover:text-red-700"
+        className="cursor-pointer text-slate dark:text-dark-slate hover:text-red-700 dark:hover:text-red-400"
         aria-label={`Delete ${event.title}`}
       >
         <Icon name="trash" size={18} />
@@ -230,10 +230,10 @@ export default function OfficerDashboard() {
     return (
       <div className="motion-safe:animate-pulse" aria-busy="true">
         <p className="sr-only">Loading your clubs...</p>
-        <div className="h-10 w-72 max-w-full rounded-md bg-border" />
+        <div className="h-10 w-72 max-w-full rounded-md bg-border dark:bg-dark-border" />
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
-          <div className="h-80 rounded-2xl bg-border" />
-          <div className="h-52 rounded-2xl bg-border" />
+          <div className="h-80 rounded-2xl bg-border dark:bg-dark-border" />
+          <div className="h-52 rounded-2xl bg-border dark:bg-dark-border" />
         </div>
       </div>
     );
@@ -289,7 +289,7 @@ export default function OfficerDashboard() {
               aria-label="Choose a club"
               value={club._id}
               onChange={(event) => setSearchParams({ club: event.target.value })}
-              className="mb-2 cursor-pointer bg-transparent text-[12px] leading-4.5 font-extrabold tracking-widest text-primary uppercase outline-none"
+              className="mb-2 cursor-pointer bg-transparent text-[12px] leading-4.5 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase outline-none"
             >
               {clubs.map((item) => (
                 <option key={item._id} value={item._id}>
@@ -298,7 +298,7 @@ export default function OfficerDashboard() {
               ))}
             </select>
           ) : (
-            <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary uppercase">{club.name}</p>
+            <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase">{club.name}</p>
           )}
           <h1>Officer dashboard</h1>
           <p className="mt-2">Create and manage your club’s events.</p>
@@ -313,13 +313,13 @@ export default function OfficerDashboard() {
       </div>
 
       {!club.approved && (
-        <p role="status" className="rounded-[14px] border border-accent/40 bg-accent/10 px-5 py-4 text-ink">
+        <p role="status" className="rounded-[14px] border border-accent/40 bg-accent/10 px-5 py-4 text-ink dark:text-dark-ink">
           <span className="font-bold">Waiting for approval.</span> An admin needs to approve {club.name} before you can post events.
         </p>
       )}
 
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_380px]">
-        <section className="overflow-hidden rounded-2xl border border-border bg-white">
+        <section className="overflow-hidden rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface">
           <div className="flex items-center justify-between px-6 py-5.5">
             <h2 className="text-[20px] leading-6 tracking-[-0.2px]">Your events</h2>
             <p className="text-[14px] leading-5">{events.length} upcoming</p>
@@ -331,21 +331,21 @@ export default function OfficerDashboard() {
               ))}
             </ul>
           ) : (
-            <p className="border-t border-border px-6 py-8 text-center">
+            <p className="border-t border-border dark:border-dark-border px-6 py-8 text-center">
               No upcoming events yet. {club.approved && "Create one to get it in front of students."}
             </p>
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-white px-6 pt-5.5 pb-3">
+        <section className="rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface px-6 pt-5.5 pb-3">
           <h2 className="text-[20px] leading-6 tracking-[-0.2px]">Club settings</h2>
           <p className="mt-1.5 mb-1.5 text-[14px] leading-5">Keep your club page accurate and welcoming.</p>
-          <Link to={`/officer/club?id=${club._id}`} className="flex items-center justify-between border-t border-border py-4 text-[14px] leading-5 font-bold">
+          <Link to={`/officer/club?id=${club._id}`} className="flex items-center justify-between border-t border-border dark:border-dark-border py-4 text-[14px] leading-5 font-bold">
             Edit club profile
             <Icon name="chevron-right" size={18} />
           </Link>
           {club.approved && (
-            <Link to={`/clubs/${club._id}`} className="flex items-center justify-between border-t border-border py-4 text-[14px] leading-5 font-bold">
+            <Link to={`/clubs/${club._id}`} className="flex items-center justify-between border-t border-border dark:border-dark-border py-4 text-[14px] leading-5 font-bold">
               View public page
               <Icon name="chevron-right" size={18} />
             </Link>

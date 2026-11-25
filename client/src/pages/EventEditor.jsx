@@ -162,8 +162,8 @@ export default function EventEditor() {
     return (
       <div className="motion-safe:animate-pulse" aria-busy="true">
         <p className="sr-only">Loading the event form...</p>
-        <div className="h-10 w-72 max-w-full rounded-md bg-border" />
-        <div className="mt-8 h-150 rounded-2xl bg-border" />
+        <div className="h-10 w-72 max-w-full rounded-md bg-border dark:bg-dark-border" />
+        <div className="mt-8 h-150 rounded-2xl bg-border dark:bg-dark-border" />
       </div>
     );
   }
@@ -199,15 +199,15 @@ export default function EventEditor() {
       </Link>
 
       <div>
-        <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary uppercase">{club.name}</p>
+        <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase">{club.name}</p>
         <h1>{isEditing ? "Edit event" : "Create event"}</h1>
         <p className="mt-2">Fill in the details. The card on the right shows how students will see it.</p>
       </div>
 
       <div className="grid items-start gap-8 lg:grid-cols-[1fr_370px]">
-        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 md:p-8">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface p-5 md:p-8">
           {(errorCount > 0 || serverError) && (
-            <p role="alert" className="flex items-center gap-2 rounded-[10px] border border-red-300 bg-red-50 px-4 py-3 text-[14px] leading-5 font-bold text-red-700">
+            <p role="alert" className="flex items-center gap-2 rounded-[10px] border border-red-300 dark:border-red-400/50 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-[14px] leading-5 font-bold text-red-700 dark:text-red-400">
               <Icon name="alert-circle" />
               {serverError || `Fix ${errorCount} ${errorCount === 1 ? "field" : "fields"} before publishing.`}
             </p>

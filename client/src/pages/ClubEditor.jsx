@@ -103,8 +103,8 @@ export default function ClubEditor() {
     return (
       <div className="motion-safe:animate-pulse" aria-busy="true">
         <p className="sr-only">Loading your club...</p>
-        <div className="h-10 w-72 max-w-full rounded-md bg-border" />
-        <div className="mt-8 h-96 max-w-2xl rounded-2xl bg-border" />
+        <div className="h-10 w-72 max-w-full rounded-md bg-border dark:bg-dark-border" />
+        <div className="mt-8 h-96 max-w-2xl rounded-2xl bg-border dark:bg-dark-border" />
       </div>
     );
   }
@@ -149,9 +149,9 @@ export default function ClubEditor() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 md:p-8">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface p-5 md:p-8">
         {(errorCount > 0 || serverError) && (
-          <p role="alert" className="flex items-center gap-2 rounded-[10px] border border-red-300 bg-red-50 px-4 py-3 text-[14px] leading-5 font-bold text-red-700">
+          <p role="alert" className="flex items-center gap-2 rounded-[10px] border border-red-300 dark:border-red-400/50 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-[14px] leading-5 font-bold text-red-700 dark:text-red-400">
             <Icon name="alert-circle" />
             {serverError || `Fix ${errorCount} ${errorCount === 1 ? "field" : "fields"} before saving.`}
           </p>
