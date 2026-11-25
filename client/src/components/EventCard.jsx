@@ -66,7 +66,8 @@ export default function EventCard({ event }) {
           </span>
           <button
             type="button"
-            className={'cursor-pointer transition-colors hover:text-primary ' + (saved ? 'text-primary' : 'text-slate')}
+            // -m-3 p-3 makes the tap area 44px without moving the icon.
+            className={'-m-3 cursor-pointer p-3 transition-colors hover:text-primary ' + (saved ? 'text-primary' : 'text-slate')}
             onClick={toggleSave}
             aria-label={saved ? 'Unsave event' : 'Save event'}
             aria-pressed={saved}
@@ -108,7 +109,8 @@ export default function EventCard({ event }) {
           </p>
           <Link
             to={`/events/${event._id}`}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary-50 text-primary"
+            // The invisible after: box makes the tap area 44px while the circle stays 32px.
+            className="relative grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary-50 text-primary after:absolute after:-inset-1.5"
             aria-label={'View ' + event.title}
           >
             <Icon name="chevron-right" />

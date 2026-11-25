@@ -230,7 +230,7 @@ export default function EventDetail() {
             <p className="min-w-0 font-bold">
               <span className="block text-ink">Hosted by</span>
               {event.hostClub?._id ? (
-                <Link to={`/clubs/${event.hostClub._id}`} className="mt-0.5 block">
+                <Link to={`/clubs/${event.hostClub._id}`} className="relative mt-0.5 block w-fit after:absolute after:-inset-x-2 after:-inset-y-3">
                   {event.hostClub.name} →
                 </Link>
               ) : (
@@ -250,7 +250,11 @@ export default function EventDetail() {
               </Link>
               <p className={captionClass}>
                 It’s saved on your dashboard.{' '}
-                <button type="button" className="cursor-pointer font-bold text-primary hover:text-primary-dark" onClick={toggleSave}>
+                <button
+                  type="button"
+                  className="relative cursor-pointer font-bold text-primary after:absolute after:-inset-x-2 after:-inset-y-3.5 hover:text-primary-dark"
+                  onClick={toggleSave}
+                >
                   Unsave
                 </button>
               </p>
@@ -278,7 +282,8 @@ export default function EventDetail() {
   return (
     <div className="mx-[calc(50%-50vw)] -my-6 bg-page md:-my-10">
       <div className="mx-auto max-w-275 px-4 pt-6 pb-12 md:px-8 md:pt-9 md:pb-24">
-        <Link to="/" className="mb-5 flex w-fit items-center gap-1.5 text-[16px] leading-5 font-bold text-primary md:mb-6 md:text-[14px]">
+        {/* -mt-3 py-3 makes the tap area 44px tall, and the smaller bottom margin keeps the card in the same place. */}
+        <Link to="/" className="-mt-3 mb-2 flex w-fit items-center gap-1.5 py-3 text-[16px] leading-5 font-bold text-primary md:mb-3 md:text-[14px]">
           <Icon name="arrow-left" strokeWidth={3} />
           Back to all events
         </Link>

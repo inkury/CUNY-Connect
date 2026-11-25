@@ -300,8 +300,9 @@ export default function Feed() {
             Discover events, meet people, and find your community across all 25 CUNY colleges.
           </p>
 
-          {/* Phone: one tilted chip under the text, like the Figma phone frame. */}
-          <div className="absolute top-62.25 right-8.5 flex rotate-3 items-center gap-2 rounded-xl bg-white py-2.5 pr-4 pl-3.5 md:hidden">
+          {/* Phone: one tilted chip under the text, like the Figma phone frame. It is placed from the bottom, inside the
+              hero's bottom padding, so it never covers the text when the text wraps to more lines on narrow phones. */}
+          <div className="absolute right-8.5 bottom-16.25 flex rotate-3 items-center gap-2 rounded-xl bg-white py-2.5 pr-4 pl-3.5 md:hidden">
             <Icon name="calendar" size={18} className="text-primary" />
             <span className="text-[14px] leading-5 font-bold text-primary">{chipLabel}</span>
           </div>
