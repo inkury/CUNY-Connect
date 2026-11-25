@@ -18,12 +18,12 @@ import Icon from './Icon.jsx';
  */
 export default function StatusBlock({ icon, title, message, children }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-border bg-white px-6 py-12 text-center md:py-16">
-      <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-50 text-primary">
+    <div className="flex flex-col items-center rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface px-6 py-12 text-center md:py-16">
+      <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-50 dark:bg-dark-primary-50 text-primary dark:text-dark-link">
         <Icon name={icon} size={24} />
       </span>
       <h2 className="mt-4 text-[22px] leading-7 tracking-[-0.44px]">{title}</h2>
-      <p className="mt-2 max-w-md text-[16px] leading-6.5 text-slate">{message}</p>
+      <p className="mt-2 max-w-md text-[16px] leading-6.5 text-slate dark:text-dark-slate">{message}</p>
       {children && <div className="mt-6 flex flex-wrap justify-center gap-3">{children}</div>}
     </div>
   );

@@ -30,20 +30,20 @@ const categoryIcons = {
 };
 
 // Shared classes for the info card rows, buttons, and small text, so the matching pieces stay the same.
-const infoRowClass = 'flex items-start gap-3.5 text-[14px] leading-5 text-slate';
-const infoIconClass = 'grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary-50 text-primary';
+const infoRowClass = 'flex items-start gap-3.5 text-[14px] leading-5 text-slate dark:text-dark-slate';
+const infoIconClass = 'grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary-50 dark:bg-dark-primary-50 text-primary dark:text-dark-link';
 const buttonClass = 'flex w-full items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
-const captionClass = 'text-center text-[12px] leading-4 text-slate';
+const captionClass = 'text-center text-[12px] leading-4 text-slate dark:text-dark-slate';
 // The page layout and the two card boxes. The loading skeleton uses them too, so it has the same shape as the event.
 const columnsClass = 'flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10';
-const mainCardClass = 'min-w-0 overflow-hidden rounded-2xl border border-border bg-white lg:flex-1';
+const mainCardClass = 'min-w-0 overflow-hidden rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface lg:flex-1';
 const infoCardClass =
-  'flex flex-col gap-4.5 rounded-2xl border border-border bg-white p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0';
+  'flex flex-col gap-4.5 rounded-2xl border border-border dark:border-dark-border bg-white dark:bg-dark-surface p-5 shadow-[0_4px_14px_var(--color-ink)] shadow-ink/6 md:gap-5 md:p-6 lg:sticky lg:top-24 lg:w-87.5 lg:shrink-0';
 // The buttons in the not-found and error messages: navy for the main action, outlined for the other one.
 const messageButtonClass = 'flex items-center justify-center rounded-[11px] px-5.5 py-3 text-[16px] leading-6 font-bold transition-colors';
 const primaryButtonClass =
-  messageButtonClass + ' cursor-pointer border border-transparent bg-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark';
-const outlineButtonClass = messageButtonClass + ' border border-border bg-white text-primary hover:text-primary-dark';
+  messageButtonClass + ' cursor-pointer border border-transparent bg-primary dark:bg-dark-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark dark:hover:bg-dark-primary/90';
+const outlineButtonClass = messageButtonClass + ' border border-border dark:border-dark-border bg-white dark:bg-dark-surface text-primary dark:text-dark-link hover:text-primary-dark dark:hover:text-dark-ink';
 // The text shown when GET /events/:id answers 404.
 const notFoundMessage = 'Event not found';
 
@@ -58,26 +58,26 @@ function EventDetailSkeleton() {
     <div className={columnsClass + ' motion-safe:animate-pulse'} aria-busy="true">
       <p className="sr-only">Loading event...</p>
       <div className={mainCardClass}>
-        <div className="h-52.5 bg-border md:h-67.5" />
+        <div className="h-52.5 bg-border dark:bg-dark-border md:h-67.5" />
         <div className="flex flex-col gap-3 px-5 pt-6 pb-7 md:gap-3.5 md:px-10 md:pt-9 md:pb-10">
-          <div className="h-4 w-32 rounded-md bg-border" />
-          <div className="h-9.5 w-3/4 rounded-md bg-border md:h-13.5" />
-          <div className="mt-2 h-7 w-48 rounded-md bg-border" />
-          <div className="h-4 w-full rounded-md bg-border" />
-          <div className="h-4 w-5/6 rounded-md bg-border" />
+          <div className="h-4 w-32 rounded-md bg-border dark:bg-dark-border" />
+          <div className="h-9.5 w-3/4 rounded-md bg-border dark:bg-dark-border md:h-13.5" />
+          <div className="mt-2 h-7 w-48 rounded-md bg-border dark:bg-dark-border" />
+          <div className="h-4 w-full rounded-md bg-border dark:bg-dark-border" />
+          <div className="h-4 w-5/6 rounded-md bg-border dark:bg-dark-border" />
         </div>
       </div>
       <div className={infoCardClass}>
         {[1, 2, 3].map((n) => (
           <div key={n} className="flex items-center gap-3.5">
-            <div className="h-10 w-10 shrink-0 rounded-[10px] bg-border" />
+            <div className="h-10 w-10 shrink-0 rounded-[10px] bg-border dark:bg-dark-border" />
             <div className="flex flex-1 flex-col gap-2">
-              <div className="h-3.5 w-2/3 rounded-md bg-border" />
-              <div className="h-3.5 w-1/3 rounded-md bg-border" />
+              <div className="h-3.5 w-2/3 rounded-md bg-border dark:bg-dark-border" />
+              <div className="h-3.5 w-1/3 rounded-md bg-border dark:bg-dark-border" />
             </div>
           </div>
         ))}
-        <div className="h-12 rounded-[11px] bg-border" />
+        <div className="h-12 rounded-[11px] bg-border dark:bg-dark-border" />
       </div>
     </div>
   );
@@ -188,7 +188,7 @@ export default function EventDetail() {
           </div>
 
           <div className="flex flex-col gap-3 px-5 pt-6 pb-7 md:gap-3.5 md:px-10 md:pt-9 md:pb-10">
-            <p className="font-body text-[12px] leading-4.5 font-extrabold tracking-[1.68px] text-primary uppercase">
+            <p className="font-body text-[12px] leading-4.5 font-extrabold tracking-[1.68px] text-primary dark:text-dark-link uppercase">
               Featured event
             </p>
             <h1 className="text-[34px] leading-9.5 tracking-[-0.85px] md:text-[48px] md:leading-13.5 md:tracking-[-1.2px]">
@@ -198,7 +198,7 @@ export default function EventDetail() {
             <h2 className="text-[22px] leading-7 tracking-[-0.44px] md:pt-5 md:text-[24px] md:leading-7.5 md:tracking-[-0.48px]">
               About this event
             </h2>
-            <p className="text-[16px] leading-6.5 text-slate md:-mt-1">{event.description}</p>
+            <p className="text-[16px] leading-6.5 text-slate dark:text-dark-slate md:-mt-1">{event.description}</p>
           </div>
         </article>
 
@@ -209,7 +209,7 @@ export default function EventDetail() {
               <Icon name="calendar" size={18} />
             </span>
             <p className="min-w-0">
-              <span className="block font-bold text-ink">{formatEventDate(event.dateTime)}</span>
+              <span className="block font-bold text-ink dark:text-dark-ink">{formatEventDate(event.dateTime)}</span>
               <span className="mt-0.5 block">{formatEventTime(event.dateTime)}</span>
             </p>
           </div>
@@ -218,7 +218,7 @@ export default function EventDetail() {
               <Icon name="map-pin" size={18} />
             </span>
             <p className="min-w-0">
-              <span className="block font-bold text-ink">{event.location}</span>
+              <span className="block font-bold text-ink dark:text-dark-ink">{event.location}</span>
               <span className="mt-0.5 block">{event.campus}</span>
             </p>
           </div>
@@ -228,31 +228,31 @@ export default function EventDetail() {
             </span>
             {/* hostClub is null when its club was deleted, so the card shows "Unknown club" without a link instead of crashing. */}
             <p className="min-w-0 font-bold">
-              <span className="block text-ink">Hosted by</span>
+              <span className="block text-ink dark:text-dark-ink">Hosted by</span>
               {event.hostClub?._id ? (
                 <Link to={`/clubs/${event.hostClub._id}`} className="relative mt-0.5 block w-fit after:absolute after:-inset-x-2 after:-inset-y-3">
                   {event.hostClub.name} →
                 </Link>
               ) : (
-                <span className="mt-0.5 block text-ink">Unknown club</span>
+                <span className="mt-0.5 block text-ink dark:text-dark-ink">Unknown club</span>
               )}
             </p>
           </div>
 
           {saved ? (
             <>
-              <p className="flex items-center gap-2.5 rounded-[11px] bg-success-50 px-4 py-3.5 text-[14px] leading-5 font-bold text-success">
+              <p className="flex items-center gap-2.5 rounded-[11px] bg-success-50 dark:bg-dark-success-50 px-4 py-3.5 text-[14px] leading-5 font-bold text-success dark:text-dark-success">
                 <Icon name="check" size={20} />
                 Saved
               </p>
-              <Link to="/dashboard" className={buttonClass + ' border border-border bg-white text-primary'}>
+              <Link to="/dashboard" className={buttonClass + ' border border-border dark:border-dark-border bg-white dark:bg-dark-surface text-primary dark:text-dark-link'}>
                 View saved events
               </Link>
               <p className={captionClass}>
                 It’s saved on your dashboard.{' '}
                 <button
                   type="button"
-                  className="relative cursor-pointer font-bold text-primary after:absolute after:-inset-x-2 after:-inset-y-3.5 hover:text-primary-dark"
+                  className="relative cursor-pointer font-bold text-primary dark:text-dark-link after:absolute after:-inset-x-2 after:-inset-y-3.5 hover:text-primary-dark dark:hover:text-dark-ink"
                   onClick={toggleSave}
                 >
                   Unsave
@@ -264,7 +264,7 @@ export default function EventDetail() {
               {/* Guests who click Save are sent to the login page by the hook. */}
               <button
                 type="button"
-                className={buttonClass + ' cursor-pointer bg-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark'}
+                className={buttonClass + ' cursor-pointer bg-primary dark:bg-dark-primary text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 hover:bg-primary-dark dark:hover:bg-dark-primary/90'}
                 onClick={toggleSave}
               >
                 Save event
@@ -280,10 +280,10 @@ export default function EventDetail() {
   // The gray page fills the full width and cancels the page padding, without changing Layout.jsx.
   // Its inner box uses the page's max width, so it lines up with the navbar and footer.
   return (
-    <div className="mx-[calc(50%-50vw)] -my-6 bg-page md:-my-10">
+    <div className="mx-[calc(50%-50vw)] -my-6 bg-page dark:bg-dark-page md:-my-10">
       <div className="mx-auto max-w-275 px-4 pt-6 pb-12 md:px-8 md:pt-9 md:pb-24">
         {/* -mt-3 py-3 makes the tap area 44px tall, and the smaller bottom margin keeps the card in the same place. */}
-        <Link to="/" className="-mt-3 mb-2 flex w-fit items-center gap-1.5 py-3 text-[16px] leading-5 font-bold text-primary md:mb-3 md:text-[14px]">
+        <Link to="/" className="-mt-3 mb-2 flex w-fit items-center gap-1.5 py-3 text-[16px] leading-5 font-bold text-primary dark:text-dark-link md:mb-3 md:text-[14px]">
           <Icon name="arrow-left" strokeWidth={3} />
           Back to all events
         </Link>

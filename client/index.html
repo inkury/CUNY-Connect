@@ -10,6 +10,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CUNY Connect</title>
+    <!--
+      Dark mode before React starts (Person 3). It adds the "dark" class right away, so a reload in dark mode
+      does not flash light first. It uses the same rules as Navbar.jsx: dark only when the user chose it with the
+      toggle (saved in localStorage), and only on pages that have dark styles (/ and /events/:id).
+    -->
+    <script>
+      (function () {
+        try {
+          var dark = localStorage.getItem('theme') === 'dark';
+          if (dark && /^\/$|^\/events\/[^/]+\/?$/.test(location.pathname)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          // If storage is blocked, the page starts light and the Navbar takes over once React runs.
+        }
+      })();
+    </script>
+    <!-- Paints the dark background before the CSS loads. The color is --color-dark-surface from global.css. -->
+    <style>
+      html.dark {
+        color-scheme: dark;
+        background-color: #131c2e;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
