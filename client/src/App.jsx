@@ -17,6 +17,7 @@ import Profile from './pages/Profile.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import OfficerDashboard from './pages/OfficerDashboard.jsx';
 import ClubEditor from './pages/ClubEditor.jsx';
+import EventEditor from './pages/EventEditor.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 /**
@@ -62,9 +63,26 @@ export default function App() {
             }
           />
           <Route
-            path="/officer/club"
+            path="/officer/events/new"
             element={
               <ProtectedRoute roles={['officer']}>
+                <EventEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/officer/events/:id/edit"
+            element={
+              <ProtectedRoute roles={['officer']}>
+                <EventEditor />
+              </ProtectedRoute>
+            }
+          />
+          {/* Any logged in student can request a new club, so this route has no role check. Editing is limited inside the page. */}
+          <Route
+            path="/officer/club"
+            element={
+              <ProtectedRoute>
                 <ClubEditor />
               </ProtectedRoute>
             }

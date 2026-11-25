@@ -10,13 +10,10 @@ import { Link } from "react-router-dom";
 import api from "../api/client.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import StatusBlock from "../components/StatusBlock.jsx";
+import { primaryButtonClass } from "../components/buttonStyles.js";
 import EventCard, { categoryGradients } from "../components/EventCard.jsx";
 import Icon from "../components/Icon.jsx";
 import { getMonthShort, getWeekdayShort } from "../utils/dateHelpers.js";
-
-// The same primary button style the Feed and Event Detail pages use, so buttons look the same everywhere.
-const primaryButtonClass =
-  "flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark hover:text-white";
 
 /**
  * Picks a greeting that matches the time of day.
@@ -59,20 +56,37 @@ function SectionHeader({ title, subtitle, linkTo, linkLabel }) {
 }
 
 /**
- * Renders a message in a dashed box for a section with nothing to show.
+ * Renders the empty Saved events card from the Figma: an icon, a heading, a line of text, and a Browse events button.
+ *
+ * @returns {JSX.Element} The empty saved events card.
+ */
+function SavedEmptyState() {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-page px-6 py-12 text-center">
+      <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-50 text-primary">
+        <Icon name="calendar" size={26} />
+      </span>
+      <h3>No saved events yet</h3>
+      <p className="max-w-115">Events you save will show up here with the date, time and location.</p>
+      <Link to="/" className={primaryButtonClass}>
+        Browse events
+      </Link>
+    </div>
+  );
+}
+
+/**
+ * Renders the one line empty message for the From clubs you follow section.
  *
  * @param {object} props The component props.
  * @param {string} props.message What to tell the user.
- * @returns {JSX.Element} The empty state.
+ * @returns {JSX.Element} The empty row.
  */
-function EmptyState({ message }) {
-  // Every empty state points back to the feed, since that is where students find things to save and clubs to follow.
+function FollowedEmptyState({ message }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border bg-page px-6 py-10 text-center">
-      <p>{message}</p>
-      <Link to="/" className="mt-2 inline-block font-bold">
-        Browse events
-      </Link>
+    <div className="flex items-center gap-3.5 rounded-[14px] border border-border bg-page px-6 py-5">
+      <Icon name="users" size={22} className="text-primary" />
+      <p className="flex-1">{message}</p>
     </div>
   );
 }
@@ -217,6 +231,9 @@ export default function Dashboard() {
   const today = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
   const firstName = user.name.split(" ")[0];
 
+  // Someone who has not saved or followed anything yet is treated as new, so they get the welcome message.
+  const isNewUser = savedEvents.length === 0 && followedClubs.length === 0;
+
   // Officers and admins get a shortcut to the officer pages, since students cannot use them.
   const canManageEvents = user.role === "officer" || user.role === "admin";
 
@@ -225,21 +242,25 @@ export default function Dashboard() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="mb-2 text-[12px] leading-4.5 font-extrabold tracking-widest text-primary uppercase">{today}</p>
-          <h1>
-            {getGreeting(now)}, {firstName}
-          </h1>
-          <p className="mt-2">Here’s what’s happening in your CUNY world.</p>
+          <h1>{isNewUser ? `Welcome, ${firstName}!` : `${getGreeting(now)}, ${firstName}`}</h1>
+          <p className="mt-2">
+            {isNewUser ? "Your account is ready. Here’s how to get started." : "Here’s what’s happening in your CUNY world."}
+          </p>
         </div>
-        {canManageEvents && (
-          <Link to="/officer" className="flex items-center gap-2 font-bold">
-            Officer tools
-            <Icon name="chevron-right" />
-          </Link>
-        )}
+        {/* Officers get a shortcut to their tools. Students get a way to start a club, which is how they become officers. */}
+        <Link to={canManageEvents ? "/officer" : "/officer/club"} className="flex items-center gap-2 font-bold">
+          {canManageEvents ? "Officer tools" : "Start a club"}
+          <Icon name="chevron-right" />
+        </Link>
       </div>
 
       <section>
-        <SectionHeader title="Saved events" subtitle="Events you’ve saved." linkTo="/" linkLabel="Explore more" />
+        <SectionHeader
+          title="Saved events"
+          subtitle="Events you’ve saved."
+          linkTo={savedEvents.length > 0 ? "/" : undefined}
+          linkLabel="Explore more"
+        />
         {savedEvents.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {savedEvents.map((event) => (
@@ -247,7 +268,7 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <EmptyState message="You haven’t saved any events yet." />
+          <SavedEmptyState />
         )}
       </section>
 
@@ -261,11 +282,11 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <EmptyState
+          <FollowedEmptyState
             message={
               followedClubs.length > 0
                 ? "The clubs you follow have no upcoming events right now."
-                : "You aren’t following any clubs yet."
+                : "You’re not following any clubs yet. Follow a club from its page to see its events here."
             }
           />
         )}

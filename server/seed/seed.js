@@ -22,11 +22,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DEMO_PASSWORD = "password123";
 const DEMO_USERS = [
   { name: "Demo Student", email: "student@cunyconnect.dev", campus: "Hunter", role: "student" },
-  { name: "Demo Officer", email: "officer@cunyconnect.dev", campus: "Hunter", role: "officer" },
+  { name: "Demo Officer", email: "officer@cunyconnect.dev", campus: "Baruch", role: "officer" },
   { name: "Demo Admin", email: "admin@cunyconnect.dev", campus: "Hunter", role: "admin" },
 ];
 // The demo officer runs this club, so the officer pages have real events to manage.
-const OFFICER_CLUB = { campus: "Hunter", name: "Mexican Student Union" };
+const OFFICER_CLUB = { campus: "Baruch", name: "Pre-Law Society" };
 // The demo student follows clubs that have events, so "From clubs you follow" on the dashboard is not empty.
 const FOLLOWED_CLUBS = [
   { campus: "Hunter", name: "Mexican Student Union" },

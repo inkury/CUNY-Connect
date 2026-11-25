@@ -1,9 +1,9 @@
 /*
   User routes for CUNY-Connect.
-  This file handles the logged-in user's own account, saved events, followed clubs, and dashboard data.
+  This file handles the logged in user's own account, saved events, followed clubs, and dashboard data.
   Owner: Person 1 (PATCH /me) and Person 4 (saved, following, and dashboard routes)
   TODO: Person 1 makes PATCH /me update only the name and campus, never the email, role, or password.
-  Person 4's saved, following, and dashboard routes are done.
+  Person 4's saved, following, dashboard, and my clubs routes are done.
 */
 const express = require("express");
 const mongoose = require("mongoose");
@@ -16,7 +16,7 @@ const notImplemented = require("../utils/notImplemented");
 const router = express.Router();
 
 /**
- * Adds a club to the logged-in user's followed clubs.
+ * Adds a club to the logged in user's followed clubs.
  *
  * @param {object} req The incoming request, with the club id in req.params.clubId.
  * @param {object} res The response object.
@@ -42,7 +42,7 @@ async function followClub(req, res) {
 }
 
 /**
- * Removes a club from the logged-in user's followed clubs.
+ * Removes a club from the logged in user's followed clubs.
  *
  * @param {object} req The incoming request, with the club id in req.params.clubId.
  * @param {object} res The response object.
@@ -64,9 +64,37 @@ async function unfollowClub(req, res) {
 }
 
 /**
- * Returns everything the Dashboard page shows for the logged-in user.
+ * Returns the clubs the logged in user is an officer of, each with its upcoming events.
  *
- * @param {object} req The incoming request, with the logged-in user in req.user.
+ * @param {object} req The incoming request, with the logged in user in req.user.
+ * @param {object} res The response object.
+ * @returns {Promise<void>} Sends a list of clubs, each with an upcomingEvents list.
+ */
+async function getMyClubs(req, res) {
+  // Clubs still waiting for approval are included, so a new officer can see that their club is pending.
+  const clubs = await Club.find({ officers: req.user._id })
+    .sort({ name: 1 })
+    .select("_id name campus description approved");
+
+  // One query loads every club's events at once, instead of one query per club.
+  const events = await Event.find({
+    hostClub: { $in: clubs.map((club) => club._id) },
+    dateTime: { $gte: new Date() },
+  })
+    .sort({ dateTime: 1 })
+    .populate("hostClub", "_id name campus");
+
+  const result = clubs.map((club) => ({
+    ...club.toJSON(),
+    upcomingEvents: events.filter((event) => String(event.hostClub._id) === String(club._id)),
+  }));
+  return res.json(result);
+}
+
+/**
+ * Returns everything the Dashboard page shows for the logged in user.
+ *
+ * @param {object} req The incoming request, with the logged in user in req.user.
  * @param {object} res The response object.
  * @returns {Promise<void>} Sends { savedEvents, followedEvents, followedClubs }.
  */
@@ -90,7 +118,7 @@ async function getDashboard(req, res) {
 }
 
 /**
- * Adds an event to the logged-in user's saved events.
+ * Adds an event to the logged in user's saved events.
  *
  * @param {object} req The incoming request, with the event id in req.params.eventId.
  * @param {object} res The response object.
@@ -117,7 +145,7 @@ async function saveEvent(req, res) {
 }
 
 /**
- * Removes an event from the logged-in user's saved events.
+ * Removes an event from the logged in user's saved events.
  *
  * @param {object} req The incoming request, with the event id in req.params.eventId.
  * @param {object} res The response object.
@@ -138,7 +166,7 @@ async function unsaveEvent(req, res) {
   return res.json({ savedEvents: user.savedEvents });
 }
 
-// Every route here is about the logged-in user, so protect runs once for the whole router.
+// Every route here is about the logged in user, so protect runs once for the whole router.
 router.use(protect);
 
 // Person 1 owns profile updates because they are part of the account system.
@@ -155,5 +183,8 @@ router.post("/me/following/:clubId", followClub);
 router.delete("/me/following/:clubId", unfollowClub);
 
 router.get("/me/dashboard", getDashboard);
+
+// Officers use this on the Officer Dashboard to manage their clubs and events.
+router.get("/me/clubs", getMyClubs);
 
 module.exports = router;
