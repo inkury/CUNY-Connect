@@ -68,23 +68,18 @@ function requireRole(...roles) {
 }
 
 /**
- * Checks whether a user is one of the officers of a club. Person 2 needs this
+ * Checks whether a user is one of the officers of a club. Person 2 uses this
  * on the event and club routes that are limited to the host club's officers.
  *
  * @param {object} user The logged-in user (req.user).
  * @param {string} clubId The id of the club to check.
  * @returns {Promise<boolean>} True if the user is an officer of that club.
  */
-
 async function isClubOfficer(user, clubId) {
-  if (!user || !mongoose.isValidObjectId(cludID)) {
-    return false;
-  }
-  const club = await club.findByID(clubID).select('officers');
-  if (!club) {
-    return false;
-  }
-  return club.officers.some((officerID) => officerID.equals(user._id));
+  if (!user || !mongoose.isValidObjectId(clubId)) return false;
+  const club = await Club.findById(clubId).select('officers');
+  if (!club) return false;
+  return club.officers.some((officerId) => officerId.equals(user._id));
 }
 
-module.exports = { protect, requireRole };
+module.exports = { protect, requireRole, isClubOfficer };
