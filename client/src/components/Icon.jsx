@@ -8,6 +8,21 @@
 
 // Each icon is just the SVG shapes that go inside the shared <svg> tag below.
 const iconShapes = {
+  // Added by Person 4 for the officer pages.
+  plus: <path d="M12 5v14M5 12h14" />,
+  edit: (
+    <>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </>
+  ),
+  trash: (
+    <>
+      <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+      <path d="M19 6 18 20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6" />
+    </>
+  ),
+  x: <path d="M18 6 6 18M6 6l12 12" />,
   calendar: (
     <>
       <rect x="3" y="5" width="18" height="16" rx="2" />

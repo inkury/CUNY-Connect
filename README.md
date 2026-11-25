@@ -119,6 +119,7 @@ Every user route needs a login.
 - POST /api/users/me/following/:clubId follows a club. Person 4.
 - DELETE /api/users/me/following/:clubId unfollows a club. Person 4.
 - GET /api/users/me/dashboard returns your upcoming saved events, upcoming events from clubs you follow, and the clubs you follow. Person 4.
+- GET /api/users/me/clubs returns the clubs you're an officer of, each with its upcoming events. Person 4.
 
 ## Events (Person 2)
 

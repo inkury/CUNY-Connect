@@ -182,3 +182,39 @@ test("the dashboard returns upcoming saved events, events from followed clubs, a
   await dashboard({ user: { _id: userId, savedEvents: [eventId], followedClubs: [clubId] } }, res);
   assert.deepEqual(res.body, { savedEvents: [savedEvent], followedEvents: [followedEvent], followedClubs: [club] });
 });
+
+const myClubs = handler("get", "/me/clubs");
+
+test("my clubs returns each club the user runs with its own upcoming events", async () => {
+  const clubA = { _id: "c1", name: "A Club", campus: "Hunter", description: "", approved: true };
+  const clubB = { _id: "c2", name: "B Club", campus: "Baruch", description: "", approved: false };
+  const before = Date.now();
+
+  // Each club stub has toJSON like a real mongoose document, so the route can copy its fields.
+  Club.find = (filter) => {
+    assert.deepEqual(filter, { officers: userId });
+    return {
+      sort(order) { assert.deepEqual(order, { name: 1 }); return this; },
+      select: async () => [clubA, clubB].map((club) => ({ ...club, toJSON: () => club })),
+    };
+  };
+  Event.find = (filter) => {
+    assert.deepEqual(filter.hostClub, { $in: ["c1", "c2"] });
+    assert.ok(filter.dateTime.$gte.getTime() >= before);
+    return {
+      sort() { return this; },
+      populate: async () => [
+        { _id: "e1", title: "First", hostClub: { _id: "c1" } },
+        { _id: "e2", title: "Second", hostClub: { _id: "c1" } },
+      ],
+    };
+  };
+
+  const res = response();
+  await myClubs({ user: { _id: userId } }, res);
+  assert.equal(res.body.length, 2);
+  assert.deepEqual(res.body[0].upcomingEvents.map((event) => event._id), ["e1", "e2"]);
+  // A pending club with no events still shows up, with an empty list.
+  assert.equal(res.body[1].approved, false);
+  assert.deepEqual(res.body[1].upcomingEvents, []);
+});
