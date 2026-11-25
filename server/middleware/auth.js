@@ -77,14 +77,14 @@ function requireRole(...roles) {
  */
 
 async function isClubOfficer(user, clubId) {
-  if (!user || !mongoose.isValidObjectId(cludID)) {
+  if (!user || !mongoose.isValidObjectId(clubId)) {
     return false;
   }
-  const club = await club.findByID(clubID).select('officers');
+  const club = await Club.findById(clubId).select('officers');
   if (!club) {
     return false;
   }
-  return club.officers.some((officerID) => officerID.equals(user._id));
+  return club.officers.some(officerId => officerId.equals(user._id));
 }
 
-module.exports = { protect, requireRole };
+module.exports = { protect, requireRole, isClubOfficer };
