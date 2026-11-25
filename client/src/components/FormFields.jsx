@@ -9,7 +9,7 @@ import Icon from "./Icon.jsx";
 
 // The border turns red when the field has an error, and navy while the user is typing in it.
 function borderClass(error) {
-  return error ? "border-red-600" : "border-border focus:border-primary";
+  return error ? "border-red-600 dark:border-red-400" : "border-border dark:border-dark-border focus:border-primary dark:focus:border-dark-link";
 }
 
 /**
@@ -23,7 +23,7 @@ function borderClass(error) {
 function FieldError({ id, error }) {
   if (!error) return null;
   return (
-    <p id={id} className="flex items-center gap-1.5 text-[12px] leading-4 text-red-700">
+    <p id={id} className="flex items-center gap-1.5 text-[12px] leading-4 text-red-700 dark:text-red-400">
       <Icon name="alert-circle" size={14} />
       {error}
     </p>
@@ -46,7 +46,7 @@ function FieldError({ id, error }) {
 export function TextField({ id, label, value, onChange, type = "text", placeholder, error }) {
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-2">
-      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600">
+      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600 dark:text-dark-slate-600">
         {label}
       </label>
       <input
@@ -57,7 +57,7 @@ export function TextField({ id, label, value, onChange, type = "text", placehold
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={`h-12 w-full rounded-[10px] border bg-white px-3.5 text-[16px] leading-6.5 text-ink outline-none placeholder:text-slate ${borderClass(error)}`}
+        className={`h-12 w-full rounded-[10px] border bg-white dark:bg-dark-surface px-3.5 text-[16px] leading-6.5 text-ink dark:text-dark-ink outline-none placeholder:text-slate dark:placeholder:text-dark-slate ${borderClass(error)}`}
       />
       <FieldError id={`${id}-error`} error={error} />
     </div>
@@ -79,7 +79,7 @@ export function TextField({ id, label, value, onChange, type = "text", placehold
 export function TextAreaField({ id, label, value, onChange, placeholder, error }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600">
+      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600 dark:text-dark-slate-600">
         {label}
       </label>
       <textarea
@@ -90,7 +90,7 @@ export function TextAreaField({ id, label, value, onChange, placeholder, error }
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={`w-full resize-y rounded-[10px] border bg-white px-3.5 py-3 text-[16px] leading-6.5 text-ink outline-none placeholder:text-slate ${borderClass(error)}`}
+        className={`w-full resize-y rounded-[10px] border bg-white dark:bg-dark-surface px-3.5 py-3 text-[16px] leading-6.5 text-ink dark:text-dark-ink outline-none placeholder:text-slate dark:placeholder:text-dark-slate ${borderClass(error)}`}
       />
       <FieldError id={`${id}-error`} error={error} />
     </div>
@@ -112,7 +112,7 @@ export function TextAreaField({ id, label, value, onChange, placeholder, error }
 export function SelectField({ id, label, value, onChange, options, error }) {
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-2">
-      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600">
+      <label htmlFor={id} className="text-[14px] leading-5 font-bold text-slate-600 dark:text-dark-slate-600">
         {label}
       </label>
       {/* The browser's own arrow is hidden so the Figma chevron can sit on top, matching the Feed filters. */}
@@ -122,7 +122,7 @@ export function SelectField({ id, label, value, onChange, options, error }) {
           value={value}
           onChange={(event) => onChange(event.target.value)}
           aria-invalid={Boolean(error)}
-          className={`h-12 w-full cursor-pointer appearance-none rounded-[10px] border bg-white pr-10 pl-3.5 text-[16px] leading-6.5 text-ink outline-none ${borderClass(error)}`}
+          className={`h-12 w-full cursor-pointer appearance-none rounded-[10px] border bg-white dark:bg-dark-surface pr-10 pl-3.5 text-[16px] leading-6.5 text-ink dark:text-dark-ink outline-none ${borderClass(error)}`}
         >
           {options.map((option) => (
             <option key={option} value={option}>
@@ -134,7 +134,7 @@ export function SelectField({ id, label, value, onChange, options, error }) {
           name="chevron-right"
           size={18}
           strokeWidth={2.67}
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 rotate-90 text-slate"
+          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 rotate-90 text-slate dark:text-dark-slate"
         />
       </div>
       <FieldError id={`${id}-error`} error={error} />

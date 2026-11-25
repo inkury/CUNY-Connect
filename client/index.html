@@ -19,7 +19,7 @@
       (function () {
         try {
           var dark = localStorage.getItem('theme') === 'dark';
-          if (dark && /^\/$|^\/events\/[^/]+\/?$/.test(location.pathname)) {
+          if (dark && /^\/$|^\/events\/[^/]+\/?$|^\/dashboard\/?$|^\/officer(\/.*)?$/.test(location.pathname)) {
             document.documentElement.classList.add('dark');
           }
         } catch (e) {

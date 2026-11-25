@@ -18,7 +18,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import Icon from './Icon.jsx';
 
 // The pages that have dark styles: the Feed (/) and the event page (/events/:id). index.html uses the same check.
-const darkPages = /^\/$|^\/events\/[^/]+\/?$/;
+const darkPages = /^\/$|^\/events\/[^/]+\/?$|^\/dashboard\/?$|^\/officer(\/.*)?$/;
 // The localStorage key that remembers the choice, "dark" or "light". index.html reads the same key.
 const themeKey = 'theme';
 
