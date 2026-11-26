@@ -3,7 +3,6 @@
   This file draws the icons used on event cards, the Feed hero, filters, and messages, and the event page as inline SVGs,
   so the app does not need an icon library. Each event category has its own icon for the event page banner.
   Owner: Person 3
-  TODO: Add more icons here as new pages need them.
 */
 
 // Each icon is just the SVG shapes that go inside the shared <svg> tag below.

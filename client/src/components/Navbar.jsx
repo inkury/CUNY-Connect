@@ -17,7 +17,8 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import Icon from './Icon.jsx';
 
-// The pages that have dark styles: the Feed (/) and the event page (/events/:id). index.html uses the same check.
+// The pages that have dark styles. When a page gets dark styles, add its route here.
+// index.html uses the same pattern, so update it there too.
 const darkPages = /^\/$|^\/events\/[^/]+\/?$|^\/dashboard\/?$|^\/officer(\/.*)?$/;
 // The localStorage key that remembers the choice, "dark" or "light". index.html reads the same key.
 const themeKey = 'theme';
