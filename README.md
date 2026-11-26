@@ -11,9 +11,7 @@ The app uses the MERN stack: MongoDB, Express, React with Vite, and Node.
 - Abinash Baruwal
 - Kenneth Gonzalez
 - Francisco Rodriguez
-- Saba Chechelashvilli
-
-Roles are not assigned yet. Add each name to the ownership list below once they are.
+- Saba Chechelashvili
 
 ## Who owns what
 
@@ -21,7 +19,8 @@ Every file starts with a comment that says what it is for, who owns it, and what
 
 - Person 1: auth and setup (Francisco Rodriguez): register, login, and me routes, PATCH /api/users/me, auth and error middleware, AuthContext, Login, Signup, Profile, and 404 pages, validation, deployment
 - Person 2: events and clubs API (Kenneth Gonzalez): Club and Event models, event, club, and admin routes, feed filters, ClubProfile and AdminClubs pages
-- Person 3: feed UI (Saba Chechelashvili): layout, Navbar, styles, EventCard, Feed and EventDetail pages, loading and empty states
+- Person 3: feed UI and design system (Saba Chechelashvili): global.css and variables.css theme, Layout and footer, Navbar (login state, Sign in, phone menu), EventCard, StatusBlock, useSaveEvent hook, Feed page (hero, filters), EventDetail page (info card, save), loading, empty, and error states, phone-friendly styling, and dark mode (setup, toggle, and dark styles)
+Extras: date chips, search, Google Calendar and Maps links, share button
 - Person 4: dashboards and officer tools (Abinash Baruwal): save and follow routes, dashboard route, Dashboard, OfficerDashboard, and ClubEditor pages, seed script, README
 
 ## Setup
@@ -91,7 +90,8 @@ The server still starts without a real MONGO_URI. It logs a warning and skips th
 - client/src/App.jsx lists every page route.
 - client/src/api has the shared axios client.
 - client/src/context has AuthContext.
-- client/src/components has Navbar, EventCard, and ProtectedRoute.
+- client/src/components has Navbar, EventCard, StatusBlock, and ProtectedRoute.
+- client/src/hooks has useSaveEvent.
 - client/src/pages has one file per page.
 - client/src/styles has variables.css, where the style guide lives, and global.css.
 

@@ -3,6 +3,7 @@
   This is the home page, where students browse upcoming events across all CUNY campuses.
   It shows a full-width navy hero banner and a filter card, then loads the events from GET /events and shows them
   as EventCards. Find events reloads the list with the chosen campus, date, and category.
+  The Today / This weekend / This week chips narrow the loaded events right away, without a new request.
   While loading it shows gray skeleton cards. Empty results and errors show a centered message with a button.
   Owner: Person 3
 */
@@ -12,7 +13,7 @@ import EventCard from '../components/EventCard.jsx';
 import Icon from '../components/Icon.jsx';
 import StatusBlock from '../components/StatusBlock.jsx';
 import { CAMPUSES, CATEGORIES } from '../constants.js';
-import { formatEventDate } from '../utils/dateHelpers.js';
+import { formatEventDate, getChipDayRange, getNewYorkDay } from '../utils/dateHelpers.js';
 
 // No filters chosen. An empty value means "All" or "Any" in the dropdowns.
 const noFilters = { campus: '', date: '', category: '' };
@@ -94,6 +95,13 @@ function FilterSelect({ id, label, value, onChange, allLabel, options }) {
   );
 }
 
+// The date chips under the heading. Only one can be on at a time.
+const dateChips = [
+  { value: 'today', label: 'Today' },
+  { value: 'weekend', label: 'This weekend' },
+  { value: 'week', label: 'This week' },
+];
+
 // The navy button style, the same as the Find events button.
 const primaryButtonClass =
   'flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary dark:bg-dark-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark dark:hover:bg-dark-primary/90';
@@ -145,6 +153,8 @@ export default function Feed() {
   const [search, setSearch] = useState(noFilters);
   // The number of upcoming events for the hero chip. It only changes on a load with no filters, and is null until then.
   const [upcomingCount, setUpcomingCount] = useState(null);
+  // Which date chip is on ('' when none is).
+  const [dateChip, setDateChip] = useState('');
 
   const campusOptions = CAMPUSES.map((campus) => ({ value: campus, label: campus }));
   const categoryOptions = CATEGORIES.map((category) => ({ value: category, label: category }));
@@ -190,6 +200,20 @@ export default function Feed() {
   // Changes one dropdown, for example updateFilter('campus', 'Hunter').
   function updateFilter(name, value) {
     setFilters((current) => ({ ...current, [name]: value }));
+    // Picking a date in the dropdown turns the date chips off, so only one kind of date filter is used.
+    if (name === 'date' && value !== '') {
+      setDateChip('');
+    }
+  }
+
+  // Turns a chip on, or off when it is tapped again. Picking a chip sets the Date dropdown back to "Any date".
+  function toggleDateChip(value) {
+    setDateChip((current) => (current === value ? '' : value));
+    setFilters((current) => ({ ...current, date: '' }));
+    // If the loaded events were already limited to one date, they are loaded again without it, so the chip sees them all.
+    if (search.date !== '') {
+      setSearch((current) => ({ ...current, date: '' }));
+    }
   }
 
   // A new object is used every time, so Find events reloads even when the filters did not change.
@@ -201,6 +225,7 @@ export default function Feed() {
   function clearFilters() {
     setFilters(noFilters);
     setSearch({ ...noFilters });
+    setDateChip('');
   }
 
   // Loads the same search again. A copy of the object is a new value, so the effect above runs again.
@@ -209,6 +234,27 @@ export default function Feed() {
   }
 
   const hasFilters = Object.values(search).some((value) => value !== '');
+
+  // The date chip narrows the loaded events here, so tapping a chip needs no new request.
+  const chipRange = dateChip ? getChipDayRange(dateChip) : null;
+  const visibleEvents = events.filter((event) => {
+    if (chipRange) {
+      const day = getNewYorkDay(event.dateTime);
+      if (day < chipRange.start || day > chipRange.end) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // Shown when the filters or a date chip leave nothing. Its button clears both.
+  const noMatchesBlock = (
+    <StatusBlock icon="search" title="No events match these filters" message="Try a different campus, date, or category.">
+      <button type="button" className={primaryButtonClass} onClick={clearFilters}>
+        Clear filters
+      </button>
+    </StatusBlock>
+  );
   // The hero chip shows just "Events" until the first unfiltered load finishes, then a count like "27 events".
   let chipLabel = 'Events';
   if (upcomingCount !== null) {
@@ -242,13 +288,7 @@ export default function Feed() {
       </StatusBlock>
     );
   } else if (events.length === 0 && hasFilters) {
-    content = (
-      <StatusBlock icon="search" title="No events match these filters" message="Try a different campus, date, or category.">
-        <button type="button" className={primaryButtonClass} onClick={clearFilters}>
-          Clear filters
-        </button>
-      </StatusBlock>
-    );
+    content = noMatchesBlock;
   } else if (events.length === 0) {
     content = (
       <StatusBlock
@@ -257,15 +297,17 @@ export default function Feed() {
         message="Check back soon. New events from across CUNY will show up here."
       />
     );
+  } else if (visibleEvents.length === 0) {
+    content = noMatchesBlock;
   } else {
     // The grid starts at one column on phones and adds columns on bigger screens.
     content = (
       <>
         <p className="mb-6 text-slate dark:text-dark-slate">
-          {events.length} {events.length === 1 ? 'event' : 'events'} selected for you
+          {visibleEvents.length} {visibleEvents.length === 1 ? 'event' : 'events'} selected for you
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
+          {visibleEvents.map((event) => (
             <EventCard key={event._id} event={event} />
           ))}
         </div>
@@ -362,6 +404,29 @@ export default function Feed() {
         Happening around CUNY
       </p>
       <h1 className="mb-2">Events worth showing up for</h1>
+
+      {/* The date chips wrap onto more lines on narrow phones. The invisible after: box makes each one 44px tall to tap. */}
+      <div className="mb-4 flex flex-wrap gap-x-2 gap-y-3">
+        {dateChips.map((chip) => {
+          const on = dateChip === chip.value;
+          return (
+            <button
+              key={chip.value}
+              type="button"
+              className={
+                'relative cursor-pointer rounded-full px-3.5 py-1.5 text-[14px] leading-5 font-bold transition-colors after:absolute after:-inset-y-1.5 after:inset-x-0 ' +
+                (on
+                  ? 'bg-primary dark:bg-dark-primary text-white'
+                  : 'bg-primary-50 dark:bg-dark-primary-50 text-primary dark:text-dark-link hover:text-primary-dark dark:hover:text-dark-ink')
+              }
+              onClick={() => toggleDateChip(chip.value)}
+              aria-pressed={on}
+            >
+              {chip.label}
+            </button>
+          );
+        })}
+      </div>
       {content}
     </>
   );
