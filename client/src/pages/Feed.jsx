@@ -3,7 +3,7 @@
   This is the home page, where students browse upcoming events across all CUNY campuses.
   It shows a full-width navy hero banner and a filter card, then loads the events from GET /events and shows them
   as EventCards. Find events reloads the list with the chosen campus, date, and category.
-  The Today / This weekend / This week chips narrow the loaded events right away, without a new request.
+  The search box and the Today / This weekend / This week chips narrow the loaded events right away, without a new request.
   While loading it shows gray skeleton cards. Empty results and errors show a centered message with a button.
   Owner: Person 3
 */
@@ -102,6 +102,21 @@ const dateChips = [
   { value: 'week', label: 'This week' },
 ];
 
+/**
+ * Checks whether an event matches the search text by title, club name, location, or campus, ignoring case.
+ *
+ * @param {object} event The event.
+ * @param {string} text The search text, already trimmed and lowercased.
+ * @returns {boolean} True when the text is empty or found in one of those fields.
+ */
+function matchesSearch(event, text) {
+  if (!text) {
+    return true;
+  }
+  const fields = [event.title, event.hostClub?.name, event.location, event.campus];
+  return fields.some((field) => field?.toLowerCase().includes(text));
+}
+
 // The navy button style, the same as the Find events button.
 const primaryButtonClass =
   'flex cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-primary dark:bg-dark-primary px-5.5 py-3 text-[16px] leading-6 font-bold text-white shadow-[0_8px_18px_var(--color-primary)] shadow-primary/25 transition-colors hover:bg-primary-dark dark:hover:bg-dark-primary/90';
@@ -153,7 +168,8 @@ export default function Feed() {
   const [search, setSearch] = useState(noFilters);
   // The number of upcoming events for the hero chip. It only changes on a load with no filters, and is null until then.
   const [upcomingCount, setUpcomingCount] = useState(null);
-  // Which date chip is on ('' when none is).
+  // The search box text, and which date chip is on ('' when none is).
+  const [query, setQuery] = useState('');
   const [dateChip, setDateChip] = useState('');
 
   const campusOptions = CAMPUSES.map((campus) => ({ value: campus, label: campus }));
@@ -235,7 +251,8 @@ export default function Feed() {
 
   const hasFilters = Object.values(search).some((value) => value !== '');
 
-  // The date chip narrows the loaded events here, so tapping a chip needs no new request.
+  // The search box and the date chip narrow the loaded events here, so typing or tapping a chip needs no new request.
+  const searchText = query.trim().toLowerCase();
   const chipRange = dateChip ? getChipDayRange(dateChip) : null;
   const visibleEvents = events.filter((event) => {
     if (chipRange) {
@@ -244,7 +261,7 @@ export default function Feed() {
         return false;
       }
     }
-    return true;
+    return matchesSearch(event, searchText);
   });
 
   // Shown when the filters or a date chip leave nothing. Its button clears both.
@@ -296,6 +313,14 @@ export default function Feed() {
         title="No upcoming events yet"
         message="Check back soon. New events from across CUNY will show up here."
       />
+    );
+  } else if (visibleEvents.length === 0 && searchText) {
+    content = (
+      <StatusBlock icon="search" title={`No events match "${query.trim()}"`} message="Try another word, or clear the search.">
+        <button type="button" className={primaryButtonClass} onClick={() => setQuery('')}>
+          Clear search
+        </button>
+      </StatusBlock>
     );
   } else if (visibleEvents.length === 0) {
     content = noMatchesBlock;
@@ -403,7 +428,39 @@ export default function Feed() {
       <p className="mb-2 font-body text-[12px] leading-4 font-extrabold tracking-widest text-primary dark:text-dark-link uppercase">
         Happening around CUNY
       </p>
-      <h1 className="mb-2">Events worth showing up for</h1>
+      {/* The heading row: the search box sits on the right on desktop and goes full width under the heading on phones. */}
+      <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <h1>Events worth showing up for</h1>
+        <div className="relative w-full shrink-0 md:w-80">
+          <label htmlFor="event-search" className="sr-only">
+            Search events
+          </label>
+          <Icon
+            name="search"
+            size={18}
+            strokeWidth={2.67}
+            className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-slate dark:text-dark-slate"
+          />
+          <input
+            id="event-search"
+            type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search events, clubs, places"
+            className="h-12 w-full rounded-[10px] border border-border dark:border-dark-border bg-white dark:bg-dark-surface pr-11 pl-10 text-[16px] leading-6.5 text-ink dark:text-dark-ink placeholder:text-slate dark:placeholder:text-dark-slate"
+          />
+          {query && (
+            <button
+              type="button"
+              className="absolute top-0 right-0 grid h-12 w-11 cursor-pointer place-items-center text-slate dark:text-dark-slate hover:text-primary dark:hover:text-dark-link"
+              onClick={() => setQuery('')}
+              aria-label="Clear search"
+            >
+              <Icon name="x" size={18} />
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* The date chips wrap onto more lines on narrow phones. The invisible after: box makes each one 44px tall to tap. */}
       <div className="mb-4 flex flex-wrap gap-x-2 gap-y-3">
