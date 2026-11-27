@@ -1,7 +1,7 @@
 /*
   Date helpers for the CUNY-Connect client.
   This file turns an event's ISO dateTime string into the short text shown on event cards and the event page,
-  and works out the New York days for the Feed date chips.
+  and works out the New York days for the Feed date chips and the Google Calendar link.
   Owner: Person 3
   Note: dates and day filters use New York time (the date chips here, and the server's date filter). 
   Displayed times use the viewer's own time zone, which is New York for our users.
@@ -136,4 +136,14 @@ export function getChipDayRange(chip) {
     return { start: today, end: addDays(today, daysToSunday) };
   }
   return { start: today, end: today };
+}
+
+/**
+ * Formats a date for a Google Calendar link: UTC, as YYYYMMDDTHHmmssZ.
+ *
+ * @param {Date} date The date.
+ * @returns {string} The time, for example "20261126T173000Z".
+ */
+export function toGoogleCalendarTime(date) {
+  return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }

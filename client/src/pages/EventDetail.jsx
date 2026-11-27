@@ -5,6 +5,7 @@
   It matches the Figma: the main card with the category banner, title, and description, and an info card with the
   date, location, host club, and save button. On desktop the info card sits beside the main card; on phones it goes below.
   While loading it shows gray skeleton cards. Not found and errors show a centered message with buttons.
+  The info card also links to Google Calendar and Google Maps.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -14,7 +15,7 @@ import Icon from '../components/Icon.jsx';
 import StatusBlock from '../components/StatusBlock.jsx';
 import { categoryGradients } from '../components/EventCard.jsx';
 import useSaveEvent from '../hooks/useSaveEvent.js';
-import { formatEventDate, formatEventTime } from '../utils/dateHelpers.js';
+import { formatEventDate, formatEventTime, toGoogleCalendarTime } from '../utils/dateHelpers.js';
 
 // The big banner icon for each category in client/src/constants.js.
 const categoryIcons = {
@@ -46,6 +47,46 @@ const primaryButtonClass =
 const outlineButtonClass = messageButtonClass + ' border border-border dark:border-dark-border bg-white dark:bg-dark-surface text-primary dark:text-dark-link hover:text-primary-dark dark:hover:text-dark-ink';
 // The text shown when GET /events/:id answers 404.
 const notFoundMessage = 'Event not found';
+
+// The Calendar and Maps links look like the club link, with the same 44px tap area.
+const infoLinkClass = 'relative mt-0.5 block w-fit font-bold after:absolute after:-inset-x-2 after:-inset-y-3';
+
+/**
+ * Builds a Google Calendar link that opens a new event filled in with this event's details.
+ *
+ * @param {object} event The event.
+ * @returns {string} The link, or '' when the title or a valid start time is missing.
+ */
+function getCalendarLink(event) {
+  const start = new Date(event.dateTime);
+  if (!event.title || Number.isNaN(start.getTime())) {
+    return '';
+  }
+  // Events only have a start time, so the calendar entry ends 1 hour after it starts.
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
+  const place = [event.location, event.campus].filter(Boolean).join(', ');
+  return (
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent(event.title) +
+    '&dates=' + toGoogleCalendarTime(start) + '/' + toGoogleCalendarTime(end) +
+    '&details=' + encodeURIComponent(event.description ?? '') +
+    '&location=' + encodeURIComponent(place)
+  );
+}
+
+/**
+ * Builds a Google Maps search link for the event's location and campus.
+ *
+ * @param {object} event The event.
+ * @returns {string} The link, or '' when there is no location or campus.
+ */
+function getMapsLink(event) {
+  const place = [event.location, event.campus].filter(Boolean).join(', ');
+  if (!place) {
+    return '';
+  }
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place);
+}
 
 /**
  * Renders gray placeholders shaped like the main card and the info card, shown while the event loads.
@@ -164,6 +205,8 @@ export default function EventDetail() {
     // The banner reuses the EventCard gradient for the category. Unknown categories fall back to Other.
     const [gradientStart, gradientEnd] = categoryGradients[event.category] ?? categoryGradients.Other;
     const iconName = categoryIcons[event.category] ?? categoryIcons.Other;
+    const calendarLink = getCalendarLink(event);
+    const mapsLink = getMapsLink(event);
 
     content = (
       // Phones stack the two cards. Desktop puts them side by side, with the main card taking the space left over.
@@ -211,6 +254,11 @@ export default function EventDetail() {
             <p className="min-w-0">
               <span className="block font-bold text-ink dark:text-dark-ink">{formatEventDate(event.dateTime)}</span>
               <span className="mt-0.5 block">{formatEventTime(event.dateTime)}</span>
+              {calendarLink && (
+                <a href={calendarLink} target="_blank" rel="noopener noreferrer" className={infoLinkClass}>
+                  Add to Google Calendar
+                </a>
+              )}
             </p>
           </div>
           <div className={infoRowClass}>
@@ -220,6 +268,11 @@ export default function EventDetail() {
             <p className="min-w-0">
               <span className="block font-bold text-ink dark:text-dark-ink">{event.location}</span>
               <span className="mt-0.5 block">{event.campus}</span>
+              {mapsLink && (
+                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className={infoLinkClass}>
+                  Open in Maps
+                </a>
+              )}
             </p>
           </div>
           <div className={infoRowClass}>
