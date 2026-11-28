@@ -5,7 +5,7 @@
   It matches the Figma: the main card with the category banner, title, and description, and an info card with the
   date, location, host club, and save button. On desktop the info card sits beside the main card; on phones it goes below.
   While loading it shows gray skeleton cards. Not found and errors show a centered message with buttons.
-  The info card also links to Google Calendar and Google Maps.
+  The info card also links to Google Calendar and Google Maps, and has a Share event button.
 */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -141,6 +141,46 @@ export default function EventDetail() {
   const { user, loading: authLoading } = useAuth();
   // The hook uses the id from the URL, so it can run before the event finishes loading.
   const { saved, toggleSave } = useSaveEvent(id);
+  // Share button state: true for 2 seconds after the page link is copied, 
+  // so the button can say "Link copied". It is state (not a plain variable) 
+  // because changing it has to redraw the button with the new text and icon.
+  const [copied, setCopied] = useState(false);
+
+
+  // Puts the button back to "Share event" 2 seconds after the link is copied, 
+  // so the message is only a short confirmation and the button 
+  // is ready to use again. This effect runs every time `copied` changes.
+  // The cleanup function cancels the timer if the person leaves
+  // the page first, so React never updates a page that is gone.
+  useEffect(() => {
+    if (!copied) {
+      return undefined;
+    }
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+
+  // Runs when the Share button is clicked. Most phones have a built-in share 
+  // sheet (navigator.share) that lets the  person send the link to Messages,
+  // email, and other apps, so that is tried first.  Most desktop browsers don't have one, 
+  // so there the page link is copied instead and the button says  "Link copied" 
+  // (setCopied(true)).try/catch: closing the share sheet without picking an app counts 
+  // as an error,  and copying can be blocked by the browser.  Neither one is a real problem, 
+  // so they are ignored quietly instead of showing an error.
+  async function handleShare() {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: event.title, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+    } catch {
+      // The person closed the share sheet, or copying is blocked. Nothing needs to happen.
+    }
+  }
 
   // Load the event again whenever the id in the URL changes, or Try again is clicked.
   useEffect(() => {
@@ -325,6 +365,18 @@ export default function EventDetail() {
               {!authLoading && !user && <p className={captionClass}>Sign in to save events.</p>}
             </>
           )}
+
+          {/* The Share event button, outlined like "View saved events". It sits outside the saved / not saved check
+              above, so guests and logged-in users both see it. The icon and text swap to a check and "Link copied"
+              while `copied` is true. aria-live="polite" makes screen readers read the new text out when it changes. */}
+          <button
+            type="button"
+            className={buttonClass + ' cursor-pointer gap-2 border border-border dark:border-dark-border bg-white dark:bg-dark-surface text-primary dark:text-dark-link hover:text-primary-dark dark:hover:text-dark-ink'}
+            onClick={handleShare}
+          >
+            <Icon name={copied ? 'check' : 'share'} size={18} />
+            <span aria-live="polite">{copied ? 'Link copied' : 'Share event'}</span>
+          </button>
         </aside>
       </div>
     );
